@@ -1,0 +1,20 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "0.1.0",
+    "tasks": [
+        {
+            "isBuildCommand": true,
+            "taskName": "compile",
+            "command": "clang++",
+            "showOutput": "always",
+            "args": [
+                "-std=c++14", 
+                "-c", 
+                "-g", 
+                "src/main.cpp", 
+                "-I${workspaceRoot}/src/include/SFML-2.4.2/include"
+            ]
+        }
+    ]
+}
