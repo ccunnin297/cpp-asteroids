@@ -5,7 +5,7 @@
             "name": "(lldb) Launch",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/sfml-app",
+            "program": "${workspaceRoot}/cpp-asteroids.app",
             "args": [],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
