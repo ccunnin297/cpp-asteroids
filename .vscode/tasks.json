@@ -6,19 +6,9 @@
         {
             "isBuildCommand": true,
             "taskName": "compile",
-            "command": "clang++",
+            "command": "make",
             "showOutput": "always",
             "args": [
-                "-std=c++11", 
-                "-g", 
-                "-ocpp-asteroids.app",
-                "src/main.cpp", 
-                "-I${workspaceRoot}/src/include/SFML-2.4.2-osx-clang/include",
-                "-L${workspaceRoot}/src/include/SFML-2.4.2-osx-clang/lib",
-                "-L${workspaceRoot}/src/include/SFML-2.4.2-osx-clang/extlibs",
-                "-lsfml-graphics", 
-                "-lsfml-window", 
-                "-lsfml-system"
             ]
         }
     ]
