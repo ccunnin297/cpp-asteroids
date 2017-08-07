@@ -1,5 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+
+#include <memory>
 
 #include "Server.h"
 
@@ -8,7 +11,7 @@ int main() {
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
-    Server server = Server();
+    auto server = std::make_unique<Server>();
 
     while (window.isOpen())
     {

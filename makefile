@@ -8,7 +8,7 @@ DEBUG = -g
 OBJS = $(OBJ_PATH)/*.o
 SFML_INCLUDE = -I$(INCLUDE_PATH)/SFML-2.4.2-osx-clang/include
 SFML_LIBS = -L$(INCLUDE_PATH)/SFML-2.4.2-osx-clang/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
-CFLAGS = -Wall -c $(DEBUG) $(SFML_INCLUDE)
+CFLAGS = -Wall -c $(DEBUG) $(SFML_INCLUDE) -std=c++14
 LFLAGS = -Wall $(DEBUG) $(SFML_LIBS)
 
 # Link
