@@ -2,7 +2,7 @@
 APP_NAME = a.out
 SRC_PATH = ./src
 OBJ_PATH = ./obj
-INCLUDE_PATH = ./src/include
+INCLUDE_PATH = ./include
 CC = g++
 DEBUG = -g
 OBJS = $(OBJ_PATH)/*.o

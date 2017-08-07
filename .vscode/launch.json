@@ -12,7 +12,7 @@
             "environment": [
                 {
                     "name":"LD_LIBRARY_PATH",
-                    "value":"${workspaceRoot}/src/include/SFML-2.4.2-osx-clang/lib"
+                    "value":"${workspaceRoot}/include/SFML-2.4.2-osx-clang/lib"
                 }
             ],
             "externalConsole": false,
