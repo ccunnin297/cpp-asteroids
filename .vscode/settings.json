@@ -17,6 +17,8 @@
         "new": "cpp",
         "stdexcept": "cpp",
         "typeinfo": "cpp",
-        "memory": "cpp"
+        "memory": "cpp",
+        "fstream": "cpp",
+        "locale": "cpp"
     }
 }

@@ -3,15 +3,24 @@
 #include <SFML/System.hpp>
 
 #include <memory>
+#include <iostream>
 
 #include "Server.h"
+#include "Client.h"
 
 int main() {
+    std::cout << "test" << std::endl;
     sf::RenderWindow window(sf::VideoMode(2000, 1000), "SFML works!");
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
-    auto server = std::make_unique<Server>();
+    const unsigned short port = 50001;
+
+    auto server = std::make_unique<Server>(port);
+    server->start();
+
+    auto client = std::make_unique<Client>();
+    client->connectToServer("127.0.0.1", port);
 
     while (window.isOpen())
     {
