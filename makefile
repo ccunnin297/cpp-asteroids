@@ -1,31 +1,23 @@
 # Paths
 APP_NAME = a.out
-SRC_PATH = ./src
-OBJ_PATH = ./obj
 INCLUDE_PATH = ./include
+SRC_PATH = ./src
+CPP_FILES = $(wildcard $(SRC_PATH)/*.cpp)
+OBJ_PATH = ./obj
+OBJ_FILES = $(addprefix $(OBJ_PATH)/,$(notdir $(CPP_FILES:.cpp=.o)))
 CC = g++
 DEBUG = -g
-OBJS = $(OBJ_PATH)/*.o
-TEMP_OBJS = ./*.o
 SFML_INCLUDE = -I$(INCLUDE_PATH)/SFML-2.4.2-osx-clang/include
 SFML_LIBS = -L$(INCLUDE_PATH)/SFML-2.4.2-osx-clang/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
 CFLAGS = -Wall -c $(DEBUG) $(SFML_INCLUDE) -std=c++14
 LFLAGS = -Wall $(DEBUG) $(SFML_LIBS)
 
 # Link
-# a.out: $(OBJS)
-# 	$(CC) $(LFLAGS) $(OBJS) -o $(APP_NAME)
+$(APP_NAME): $(OBJ_FILES)
+	$(CC) $(LFLAGS) -o $@ $^
 
-# Compile
-# main.o: $(SRC_PATH)/main.cpp $(SRC_PATH)/Server.h
-# 	$(CC) $(CFLAGS) $(SRC_PATH)/main.cpp
-
-# Server.o: $(SRC_PATH)/Server.cpp
-# 	$(CC) $(CFLAGS) $(SRC_PATH)/Server.cpp
+$(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm $(OBJS) $(TEMP_OBJS) $(APP_NAME)
-all: 
-	$(CC) $(CFLAGS) $(SRC_PATH)/*.cpp
-	mv *.o $(OBJ_PATH)
-	$(CC) $(LFLAGS) $(OBJS) -o $(APP_NAME)
+	rm -f $(OBJ_FILES) $(APP_NAME)
