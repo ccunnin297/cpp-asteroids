@@ -7,20 +7,25 @@
 
 #include "Server.h"
 #include "Client.h"
+#include "ClientGame.h"
 
 int main() {
-    std::cout << "test" << std::endl;
-    sf::RenderWindow window(sf::VideoMode(2000, 1000), "SFML works!");
-    sf::CircleShape shape(100.f);
-    shape.setFillColor(sf::Color::Green);
 
+    sf::RenderWindow window(sf::VideoMode(2000, 1000), "SFML works!");
+    
     const unsigned short port = 50001;
 
-    auto server = std::make_unique<Server>(port);
-    server->start();
+    Server server(port);
+    server.start();
 
-    auto client = std::make_unique<Client>();
-    client->connectToServer("127.0.0.1", port);
+    Client client;
+    client.connectToServer("127.0.0.1", port);
+
+    // auto clientGame = std::make_unique<ClientGame>();
+    ClientGame clientGame;
+
+    //input -> client -> server -> servergame
+    //servergame -> server -> client -> clientgame
 
     while (window.isOpen())
     {
@@ -31,8 +36,15 @@ int main() {
                 window.close();
         }
 
+        //send inputs to server
+        // client->sendInputs(inputs);
+
+        //update client from server
+        // clientGame->updateFromClient(client);
+
+        //Draw GUI
         window.clear();
-        window.draw(shape);
+        clientGame.draw(window);
         window.display();
     }
 

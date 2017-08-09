@@ -3,6 +3,7 @@
 #include <SFML/Network.hpp>
 #include <iostream>
 #include <memory>
+#include <thread>
 
 Client::Client()
 {
@@ -18,6 +19,21 @@ void Client::connectToServer(sf::IpAddress address, unsigned short port)
         std::cout << "error connecting on client" << std::endl;
     } else {
         std::cout << "client connected" << std::endl;
+        std::thread t1([=] { listen(); });;
+        t1.detach();
+    }
+};
+
+void Client::listen()
+{
+    char data[100];
+    std::size_t received;
+    while (true) {
+        if (m_socket->receive(data, 100, received) != sf::Socket::Done) {
+            //error
+        }
+        //handle
+        std::cout << data << std::endl;
     }
 };
 

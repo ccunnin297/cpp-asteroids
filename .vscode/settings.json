@@ -19,6 +19,8 @@
         "typeinfo": "cpp",
         "memory": "cpp",
         "fstream": "cpp",
-        "locale": "cpp"
+        "locale": "cpp",
+        "utility": "cpp",
+        "iterator": "cpp"
     }
 }
