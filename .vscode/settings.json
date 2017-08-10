@@ -21,6 +21,12 @@
         "fstream": "cpp",
         "locale": "cpp",
         "utility": "cpp",
-        "iterator": "cpp"
+        "iterator": "cpp",
+        "array": "cpp",
+        "sstream": "cpp",
+        "__locale": "cpp",
+        "thread": "cpp",
+        "__bit_reference": "cpp",
+        "algorithm": "cpp"
     }
 }

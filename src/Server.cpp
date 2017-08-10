@@ -5,10 +5,13 @@
 #include <memory>
 #include <thread>
 
+#include <json.hpp>
+
 Server::Server(unsigned short port)
 {
     m_port = port;
-    m_listener = std::make_unique<sf::TcpListener>();  
+    m_listener = std::make_unique<sf::TcpListener>();
+    m_game = std::make_unique<Game>();
 };
 
 void Server::start()
@@ -25,6 +28,8 @@ void Server::start()
     std::thread t2([=] { run(); });;
     t1.detach();
     t2.detach();
+
+    m_game->addEntities();
 }
 
 void Server::waitForClients()
@@ -48,24 +53,28 @@ void Server::run()
     sf::Clock clock;
     while(true) {
         sf::Time elapsed = clock.getElapsedTime();
-        //30 fps
-        // if (elapsed.asMilliseconds() >= 33) {
+        
+        // if (elapsed.asMilliseconds() >= 33) { //30 fps
         if (elapsed.asMilliseconds() >= 1000) {
             //run game
-            //communicate updates to client
-            //check for client first
-            if (m_socket) {
-                char data[100] = "Hello World! it's been one second";
-                if (m_socket->send(data, 100) != sf::Socket::Done) {
-                    //Error
-                }
-            }
-
-
-
+            m_game->run();
+            updateClient();
             //restart timer
             clock.restart();
         }
         
+    }
+};
+
+void Server::updateClient()
+{
+    //communicate updates to client
+    //check for client first
+    if (m_socket) {
+        nlohmann::json jsonState = m_game->getState();
+        std::string strData = jsonState.dump();
+        if (m_socket->send(strData.c_str(), 1000) != sf::Socket::Done) {
+            //Error
+        }
     }
 };
