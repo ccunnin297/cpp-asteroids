@@ -38,21 +38,23 @@ void Game::setState(nlohmann::json jsonState)
 {
     for (auto jsonIt = jsonState.begin(); jsonIt != jsonState.end(); ++jsonIt) {
         unsigned short id = (*jsonIt)["id"];
-        std::cout << "trying to find id:" << id << std::endl;
 
         //Find entity with matching id
-        auto entIt = find_if(m_entities.begin(), m_entities.end(), 
-            [id](std::unique_ptr<Entity>& entity) {
-                return entity->m_id == id;
+        auto entIt = std::find_if(
+            m_entities.begin(), 
+            m_entities.end(), 
+            [&](std::unique_ptr<Entity> const& entity) {
+                if (entity.get()->m_id != id) {
+                    std::cout << entity.get()->m_id << " != " << id << std::endl;
+                }
+                return entity.get()->m_id == id;
             });
 
         if (entIt != m_entities.end()) {
             //Found
-            std::cout << "found" << std::endl;
             (*entIt)->setState(*jsonIt);
         } else {
             //New entity, add to the game
-            std::cout << "not found, creating new entity" << std::endl;
             auto newEntity = std::make_unique<Entity>(*jsonIt);
             m_entities.emplace_back(std::move(newEntity));
         }

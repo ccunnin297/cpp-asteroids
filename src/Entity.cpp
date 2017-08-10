@@ -7,6 +7,7 @@ Entity::Entity(unsigned short id)
 
 Entity::Entity(nlohmann::json jsonState)
 {
+    m_id = jsonState["id"];
     setState(jsonState);
 }
 
