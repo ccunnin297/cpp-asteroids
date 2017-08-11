@@ -27,6 +27,10 @@
         "__locale": "cpp",
         "thread": "cpp",
         "__bit_reference": "cpp",
-        "algorithm": "cpp"
+        "algorithm": "cpp",
+        "forward_list": "cpp",
+        "__functional_base": "cpp",
+        "istream": "cpp",
+        "tuple": "cpp"
     }
 }

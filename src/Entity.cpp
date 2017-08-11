@@ -1,25 +1,32 @@
 #include "Entity.h"
 
-Entity::Entity(unsigned short id)
+Entity::Entity(int id)
 {
     m_id = id;
 };
 
-Entity::Entity(nlohmann::json jsonState)
+Entity::Entity(EntityState& entityState)
 {
-    m_id = jsonState["id"];
-    setState(jsonState);
+    m_id = entityState.id();
+    setState(entityState);
 }
 
-nlohmann::json Entity::getState()
+EntityState Entity::getState()
 {
-    return {
-        {"id", m_id},
-        {"position", {{"x", m_position.x}, {"y", m_position.y}}}
-    };
+    // auto entityState = std::make_unique<EntityState>();
+    EntityState entityState;
+    entityState.set_id(m_id);
+
+    // entityState->set_position(new PositionState());
+    // auto position = std::make_unique<PositionState>();
+    auto* position = entityState.mutable_position();
+    position->set_x(m_position.x);
+    position->set_y(m_position.y);
+    
+    return entityState;
 };
 
-void Entity::setState(nlohmann::json jsonState)
+void Entity::setState(EntityState& entityState)
 {
-    m_position = sf::Vector2f(jsonState["position"]["x"], jsonState["position"]["y"]);
+    m_position = sf::Vector2f(entityState.position().x(), entityState.position().y());
 }
