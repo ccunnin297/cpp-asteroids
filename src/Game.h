@@ -1,9 +1,11 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include <json.hpp>
 
 #include "Entity.h"
+#include "GameState.pb.h"
+
+#include <memory>
 
 class Game
 {
@@ -14,8 +16,8 @@ class Game
         void run();
         void draw(sf::RenderWindow &window);
 
-        nlohmann::json getState();
-        void setState(nlohmann::json jsonState);        
+        std::unique_ptr<GameState> getState();
+        void setState(GameState& gameState);        
     private:                
         std::vector<std::unique_ptr<Entity>> m_entities;
 };

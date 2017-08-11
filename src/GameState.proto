@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+message PositionState {
+    optional float x = 1;
+    optional float y = 2;
+}
+
+message EntityState {
+    required int32 id = 1;
+    optional PositionState position = 2;
+}
+
+message GameState {
+    repeated EntityState entities = 1;
+}

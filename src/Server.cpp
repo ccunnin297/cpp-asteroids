@@ -5,8 +5,6 @@
 #include <memory>
 #include <thread>
 
-#include <json.hpp>
-
 Server::Server(unsigned short port)
 {
     m_port = port;
@@ -39,11 +37,11 @@ void Server::waitForClients()
         auto client = std::make_unique<sf::TcpSocket>();
         if (m_listener->accept(*client) != sf::Socket::Done)
         {
-            // std::cout << "error connecting on server" << std::endl;
+            std::cout << "error connecting on server" << std::endl;
             return;
         } else {
             m_socket = std::move(client);
-            std::cout << "server connected" << std::endl;
+            std::cout << "server connected to client" << std::endl;
         }
     }
 };
@@ -54,12 +52,10 @@ void Server::run()
     while(true) {
         sf::Time elapsed = clock.getElapsedTime();
         
-        // if (elapsed.asMilliseconds() >= 33) { //30 fps
-        if (elapsed.asMilliseconds() >= 1000) {
-            //run game
+        if (elapsed.asMilliseconds() >= 33) { //30 ticks per second
+        // if (elapsed.asMilliseconds() >= 1000) { //1 tick per second
             m_game->run();
             updateClient();
-            //restart timer
             clock.restart();
         }
         
@@ -68,12 +64,13 @@ void Server::run()
 
 void Server::updateClient()
 {
-    //communicate updates to client
     //check for client first
     if (m_socket) {
-        nlohmann::json jsonState = m_game->getState();
-        std::string strData = jsonState.dump();
-        if (m_socket->send(strData.c_str(), 1000) != sf::Socket::Done) {
+        auto gameState = m_game->getState();
+        std::string strData;
+        gameState->SerializeToString(&strData);
+        gameState->ParseFromString(strData);
+        if (m_socket->send(strData.c_str(), 100000) != sf::Socket::Done) {
             //Error
         }
     }

@@ -6,12 +6,11 @@
 #include <memory>
 #include <thread>
 
-#include <json.hpp>
-
 Client::Client()
 {
     m_socket = std::make_unique<sf::TcpSocket>();
     m_game = std::make_unique<Game>();
+    m_inputs = std::make_unique<Inputs>();
 };
 
 //TCP
@@ -19,10 +18,9 @@ void Client::connectToServer(sf::IpAddress address, unsigned short port)
 {
     sf::Socket::Status status = m_socket->connect(address, port);
     if (status != sf::Socket::Done) {
-        //error
         std::cout << "error connecting on client" << std::endl;
     } else {
-        std::cout << "client connected" << std::endl;
+        std::cout << "client connected to server" << std::endl;
         std::thread t1([=] { listen(); });;
         t1.detach();
     }
@@ -30,17 +28,17 @@ void Client::connectToServer(sf::IpAddress address, unsigned short port)
 
 void Client::listen()
 {
-    char data[1000];
-    std::size_t received;
     while (true) {
         //wait until packet is received
-        if (m_socket->receive(data, 1000, received) != sf::Socket::Done) {
+        char data[100000];
+        std::size_t received;
+        if (m_socket->receive(data, 100000, received) != sf::Socket::Done) {
             //error
         }
-        std::string strData(data);
-        nlohmann::json jsonState = nlohmann::json::parse(strData);
-
-        m_game->setState(jsonState);
+        // std::string strData(data);
+        GameState gameState;
+        gameState.ParseFromString(data);
+        m_game->setState(gameState);
     }
 };
 
@@ -48,6 +46,7 @@ void Client::run()
 {
     sf::RenderWindow window(sf::VideoMode(2000, 1000), "SFML works!");
 
+    sf::Clock clock;
     while (window.isOpen())
     {
         sf::Event event;
@@ -57,14 +56,42 @@ void Client::run()
                 window.close();
         }
 
+        updateInputs();
+
+        sf::Time elapsed = clock.getElapsedTime();
+        if (elapsed.asMilliseconds() >= 33) { //30 ticks per second
+            m_game->run();
+            updateServer();
+            clock.restart();
+        }
+
         //Draw GUI
-        window.clear();
-        draw(window);
-        window.display();
+        // if (elapsed.asMilliseconds() >= 33) { //30 frames per second
+            draw(window);
+        // }
     }
 };
 
 void Client::draw(sf::RenderWindow &window)
 {
+    window.clear();
     m_game->draw(window);
-}
+    window.display();
+};
+
+void Client::updateInputs()
+{
+    m_inputs->update();
+};
+
+void Client::updateServer()
+{
+    //check for server first
+    // if (m_socket) {
+    //     nlohmann::json jsonState = m_game->getState();
+    //     std::string strData = jsonState.dump();
+    //     if (m_socket->send(strData.c_str(), 1000) != sf::Socket::Done) {
+    //         //Error
+    //     }
+    // }
+};
