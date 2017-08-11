@@ -7,6 +7,10 @@
 *.o
 *.obj
 
+# Intermediate protobuf files
+*.pb.h
+*.pb.cc
+
 # Precompiled Headers
 *.gch
 *.pch
