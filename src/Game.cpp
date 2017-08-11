@@ -66,16 +66,8 @@ std::unique_ptr<GameState> Game::getState()
     auto gameState = std::make_unique<GameState>();
     for (auto& it : m_entities) {
         auto entityState = it->getState();
-
         EntityState* newEntityState = gameState->add_entities();
-        
-        // gameState->mutable_entities()->Add(entityState);
-        // newEntityState->CopyFrom(entityState);
-        newEntityState->set_id(entityState.id());
-        PositionState* positionState = newEntityState->mutable_position();
-        positionState->set_x(entityState.mutable_position()->x());
-        positionState->set_y(entityState.mutable_position()->y());
+        newEntityState->CopyFrom(entityState);
     }
-    std::cout << gameState->entities(1).id() << std::endl;
     return gameState;
 }
