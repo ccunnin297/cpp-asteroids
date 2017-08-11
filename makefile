@@ -38,9 +38,11 @@ LFLAGS = -Wall $(DEBUG) $(SFML_LIBS) $(PROTO_LIBS)
 
 # Compile
 $(GEN_PATH)/%.pb.cc: $(SRC_PATH)/%.proto
+	mkdir -p $(GEN_PATH)
 	$(PROTO_BIN)/protoc --proto_path=$(SRC_PATH) --cpp_out=$(GEN_PATH) $<
 
 $(OBJ_PATH)/%.pb.o: $(GEN_PATH)/%.pb.cc
+	mkdir -p $(OBJ_PATH)
 	$(CC) $(CFLAGS) -c -o $@ $<	
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp $(PROTO_GENS) $(PROTO_OBJS)
