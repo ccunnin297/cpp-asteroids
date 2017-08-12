@@ -56,18 +56,18 @@ void Client::run()
                 window.close();
         }
 
-        updateInputs();
-
         sf::Time elapsed = clock.getElapsedTime();
         if (elapsed.asMilliseconds() >= 33) { //30 ticks per second
+            updateInputs();
             m_game->run();
             updateServer();
+            draw(window);
             clock.restart();
         }
 
         //Draw GUI
         // if (elapsed.asMilliseconds() >= 33) { //30 frames per second
-            draw(window);
+            
         // }
     }
 };
@@ -86,6 +86,7 @@ void Client::updateInputs()
 
 void Client::updateServer()
 {
+    //send updates to server
     //check for server first
     // if (m_socket) {
     //     nlohmann::json jsonState = m_game->getState();

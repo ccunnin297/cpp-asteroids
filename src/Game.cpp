@@ -6,6 +6,10 @@
 
 Game::Game()
 {
+    m_inputs = std::make_unique<Inputs>();
+    m_inputFunctions = {
+        {InputKey::Forward, std::bind(&Game::moveForward, this)}
+    };
 };
 
 void Game::addEntities()
@@ -18,8 +22,29 @@ void Game::addEntities()
     }
 }
 
+void Game::setInputState(u_int32_t inputState)
+{
+    m_inputs->setState(inputState);
+}
+
+void Game::moveForward()
+{
+
+};
+
+void Game::enactInputs()
+{
+    for (auto const& it : m_inputFunctions) {
+        if (m_inputs->isKeyPressed(it.first)) {
+            it.second();
+        }
+    }
+}
+
 void Game::run()
 {
+    m_inputs->update();
+
     for (auto& it : m_entities) {
         sf::Vector2f pos = it->m_position;
         it->m_position = sf::Vector2f(pos.x, pos.y+0.5);
