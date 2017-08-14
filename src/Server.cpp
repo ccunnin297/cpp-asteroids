@@ -1,9 +1,6 @@
 #include "Server.h"
 
-#include <SFML/Network.hpp>
 #include <iostream>
-#include <memory>
-#include <thread>
 
 Server::Server(unsigned short port)
 {
@@ -21,11 +18,14 @@ void Server::start()
         std::cout << "error listening to port" << std::endl;
         return;
     }
-    std::cout << "done" << std::endl;
-    std::thread t1([=] { waitForClients(); });
-    std::thread t2([=] { run(); });;
-    t1.detach();
-    t2.detach();
+    std::cout << "server started" << std::endl;
+
+    m_clientThread = std::make_unique<std::thread>([=] { waitForClients(); });
+    m_clientThread->detach();
+    m_runnerThread = std::make_unique<std::thread>([=] { run(); });
+    m_runnerThread->detach();
+    m_listenerThread = std::make_unique<std::thread>([=] { listen(); });
+    m_listenerThread->detach();
 
     m_game->addEntities();
 }
@@ -72,6 +72,27 @@ void Server::updateClient()
         packet << strData;
         if (m_socket->send(packet) != sf::Socket::Done) {
             //Error
+        }
+    }
+};
+
+void Server::listen()
+{
+    //Listen for inputs
+    InputState inputState;
+    std::string strData;
+    sf::Packet packet;
+    while (true) {
+        if (m_socket) {
+            if (m_socket->receive(packet) != sf::Socket::Done) {
+                //error
+            } else {
+                packet >> strData;
+                inputState.ParseFromString(strData);
+                auto inputs = std::make_unique<Inputs>();
+                inputs->setState(inputState);
+                m_game->enactInputs(std::move(inputs)); 
+            }
         }
     }
 };

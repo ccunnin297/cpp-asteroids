@@ -1,10 +1,7 @@
 #include "Client.h"
 
-#include <SFML/Graphics.hpp>
-#include <SFML/Network.hpp>
 #include <iostream>
-#include <memory>
-#include <thread>
+
 
 Client::Client()
 {
@@ -21,21 +18,21 @@ void Client::connectToServer(sf::IpAddress address, unsigned short port)
         std::cout << "error connecting on client" << std::endl;
     } else {
         std::cout << "client connected to server" << std::endl;
-        std::thread t1([=] { listen(); });;
-        t1.detach();
+        m_listenerThread = std::make_unique<std::thread>([=] { listen(); });
+        m_listenerThread->detach();
     }
 };
 
 void Client::listen()
 {
+    sf::Packet packet;
+    std::string strData;
+    GameState gameState;
     while (true) {
-        sf::Packet packet;
         if (m_socket->receive(packet) != sf::Socket::Done) {
             //error
         } else {
-            std::string strData;
             packet >> strData;
-            GameState gameState;
             gameState.ParseFromString(strData);
             m_game->setState(gameState); 
         }
@@ -58,9 +55,10 @@ void Client::run()
 
         sf::Time elapsed = clock.getElapsedTime();
         if (elapsed.asMilliseconds() >= 33) { //30 ticks per second
-            updateInputs();
+            if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) {
+                updateInputs(event);
+            }
             m_game->run();
-            updateServer();
             draw(window);
             clock.restart();
         }
@@ -79,20 +77,23 @@ void Client::draw(sf::RenderWindow &window)
     window.display();
 };
 
-void Client::updateInputs()
+void Client::updateInputs(sf::Event event)
 {
-    m_inputs->update();
+    m_inputs->update(event);
+    updateServer();
 };
 
 void Client::updateServer()
 {
-    //send updates to server
-    //check for server first
-    // if (m_socket) {
-    //     nlohmann::json jsonState = m_game->getState();
-    //     std::string strData = jsonState.dump();
-    //     if (m_socket->send(strData.c_str(), 1000) != sf::Socket::Done) {
-    //         //Error
-    //     }
-    // }
+    // check for server first
+    if (m_socket) {
+        auto inputState = m_inputs->getState();
+        std::string strData;
+        inputState.SerializeToString(&strData);
+        sf::Packet packet;
+        packet << strData;
+        if (m_socket->send(packet) != sf::Socket::Done) {
+            //Error
+        }
+    }
 };

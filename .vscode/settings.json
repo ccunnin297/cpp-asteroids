@@ -32,6 +32,8 @@
         "__functional_base": "cpp",
         "istream": "cpp",
         "tuple": "cpp",
-        "bitset": "cpp"
+        "bitset": "cpp",
+        "*.ipp": "cpp",
+        "slist": "cpp"
     }
 }

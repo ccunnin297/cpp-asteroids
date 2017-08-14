@@ -6,9 +6,13 @@
 
 Game::Game()
 {
-    m_inputs = std::make_unique<Inputs>();
-    m_inputFunctions = {
+    m_inputPressedFunctions = {
         {InputKey::Forward, std::bind(&Game::moveForward, this)}
+    };
+    m_inputReleasedFunctions = {
+        {InputKey::Forward, std::bind(&Game::stopMovingForward, this)}
+    };
+    m_inputDownFunctions = {
     };
 };
 
@@ -22,20 +26,34 @@ void Game::addEntities()
     }
 }
 
-void Game::setInputState(u_int32_t inputState)
-{
-    m_inputs->setState(inputState);
-}
-
 void Game::moveForward()
 {
-
+    for (auto& it : m_entities) {
+        it->m_velocity = sf::Vector2f(0, 5);
+    }
 };
 
-void Game::enactInputs()
+void Game::stopMovingForward()
 {
-    for (auto const& it : m_inputFunctions) {
-        if (m_inputs->isKeyPressed(it.first)) {
+    for (auto& it : m_entities) {
+        it->m_velocity = sf::Vector2f(0, 0);
+    }
+};
+
+void Game::enactInputs(std::unique_ptr<Inputs> inputs)
+{
+    for (auto const& it : m_inputPressedFunctions) {
+        if (inputs->isKeyPressed(it.first)) {
+            it.second();
+        }
+    }
+    for (auto const& it : m_inputReleasedFunctions) {
+        if (inputs->isKeyReleased(it.first)) {
+            it.second();
+        }
+    }
+    for (auto const& it : m_inputDownFunctions) {
+        if (inputs->isKeyDown(it.first)) {
             it.second();
         }
     }
@@ -43,11 +61,8 @@ void Game::enactInputs()
 
 void Game::run()
 {
-    m_inputs->update();
-
     for (auto& it : m_entities) {
-        sf::Vector2f pos = it->m_position;
-        it->m_position = sf::Vector2f(pos.x, pos.y+0.5);
+        it->update();
     }
 };
 
@@ -85,7 +100,7 @@ void Game::setState(GameState& gameState)
             m_entities.emplace_back(std::move(newEntity));
         }
     }
-}
+};
 
 GameState Game::getState()
 {
@@ -96,4 +111,4 @@ GameState Game::getState()
         newEntityState->CopyFrom(entityState);
     }
     return gameState;
-}
+};

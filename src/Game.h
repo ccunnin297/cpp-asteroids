@@ -18,15 +18,14 @@ class Game
         void draw(sf::RenderWindow &window);
 
         void setState(GameState& gameState);
-        void setInputState(u_int32_t inputState);
-
         GameState getState();
+        void enactInputs(std::unique_ptr<Inputs> inputs);
     private:
-        void enactInputs();
-
         void moveForward();
+        void stopMovingForward();
 
-        std::unique_ptr<Inputs> m_inputs;
         std::vector<std::unique_ptr<Entity>> m_entities;
-        std::map<InputKey, std::function<void()>> m_inputFunctions;
+        std::map<InputKey, std::function<void()>> m_inputPressedFunctions;
+        std::map<InputKey, std::function<void()>> m_inputReleasedFunctions;
+        std::map<InputKey, std::function<void()>> m_inputDownFunctions;
 };

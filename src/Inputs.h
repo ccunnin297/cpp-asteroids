@@ -3,12 +3,15 @@
 #include <SFML/Window.hpp>
 
 #include <map>
+#include <memory>
+
+#include "InputState.pb.h"
 
 enum InputKey {
-    Forward=        1<<1,
-    Back=           1<<2,
-    Left=           1<<3,
-    Right=          1<<4
+    Forward=        1<<0,
+    Back=           1<<1,
+    Left=           1<<2,
+    Right=          1<<3
 };
 
 class Inputs
@@ -16,9 +19,12 @@ class Inputs
     public:
         Inputs();
 
-        void setState(uint32_t keyState);
-        void update();
+        InputState getState();
+        void setState(InputState keyState);
+        void update(sf::Event event);
         bool isKeyPressed(InputKey key);
+        bool isKeyReleased(InputKey key);
+        bool isKeyDown(InputKey key);
     private:
         const std::map<InputKey, sf::Keyboard::Key> m_keyMapping = {
             {InputKey::Forward, sf::Keyboard::Up},
@@ -26,5 +32,6 @@ class Inputs
             {InputKey::Left, sf::Keyboard::Left},
             {InputKey::Right, sf::Keyboard::Right}
         };
-        uint32_t m_state;
+        std::unique_ptr<InputState> m_state;
+        bool m_hasUpdated;
 };

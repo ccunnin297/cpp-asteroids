@@ -29,4 +29,9 @@ EntityState Entity::getState()
 void Entity::setState(EntityState& entityState)
 {
     m_position = sf::Vector2f(entityState.position().x(), entityState.position().y());
-}
+};
+
+void Entity::update()
+{
+    m_position += m_velocity;
+};
