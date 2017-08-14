@@ -20,7 +20,7 @@ class Game
         void setState(GameState& gameState);
         void setInputState(u_int32_t inputState);
 
-        std::unique_ptr<GameState> getState();
+        GameState getState();
     private:
         void enactInputs();
 

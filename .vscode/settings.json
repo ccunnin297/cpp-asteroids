@@ -31,6 +31,7 @@
         "forward_list": "cpp",
         "__functional_base": "cpp",
         "istream": "cpp",
-        "tuple": "cpp"
+        "tuple": "cpp",
+        "bitset": "cpp"
     }
 }

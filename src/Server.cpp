@@ -38,7 +38,6 @@ void Server::waitForClients()
         if (m_listener->accept(*client) != sf::Socket::Done)
         {
             std::cout << "error connecting on server" << std::endl;
-            return;
         } else {
             m_socket = std::move(client);
             std::cout << "server connected to client" << std::endl;
@@ -68,9 +67,10 @@ void Server::updateClient()
     if (m_socket) {
         auto gameState = m_game->getState();
         std::string strData;
-        gameState->SerializeToString(&strData);
-        gameState->ParseFromString(strData);
-        if (m_socket->send(strData.c_str(), 100000) != sf::Socket::Done) {
+        gameState.SerializeToString(&strData);
+        sf::Packet packet;
+        packet << strData;
+        if (m_socket->send(packet) != sf::Socket::Done) {
             //Error
         }
     }

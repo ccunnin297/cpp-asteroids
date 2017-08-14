@@ -29,16 +29,16 @@ void Client::connectToServer(sf::IpAddress address, unsigned short port)
 void Client::listen()
 {
     while (true) {
-        //wait until packet is received
-        char data[100000];
-        std::size_t received;
-        if (m_socket->receive(data, 100000, received) != sf::Socket::Done) {
+        sf::Packet packet;
+        if (m_socket->receive(packet) != sf::Socket::Done) {
             //error
+        } else {
+            std::string strData;
+            packet >> strData;
+            GameState gameState;
+            gameState.ParseFromString(strData);
+            m_game->setState(gameState); 
         }
-        // std::string strData(data);
-        GameState gameState;
-        gameState.ParseFromString(data);
-        m_game->setState(gameState);
     }
 };
 

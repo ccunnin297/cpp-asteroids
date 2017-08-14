@@ -63,6 +63,7 @@ void Game::draw(sf::RenderWindow &window)
 
 void Game::setState(GameState& gameState)
 {
+    std::cout << gameState.DebugString();
     auto entityStates = gameState.entities();
     for (auto& entStateIt : entityStates) {
         unsigned short id = entStateIt.id();
@@ -86,12 +87,12 @@ void Game::setState(GameState& gameState)
     }
 }
 
-std::unique_ptr<GameState> Game::getState()
+GameState Game::getState()
 {
-    auto gameState = std::make_unique<GameState>();
+    GameState gameState;
     for (auto& it : m_entities) {
         auto entityState = it->getState();
-        EntityState* newEntityState = gameState->add_entities();
+        EntityState* newEntityState = gameState.add_entities();
         newEntityState->CopyFrom(entityState);
     }
     return gameState;
