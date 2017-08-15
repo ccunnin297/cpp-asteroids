@@ -18,9 +18,10 @@ class Inputs
 {
     public:
         Inputs();
+        Inputs(InputState inputState);
 
         InputState getState();
-        void setState(InputState keyState);
+        void setState(InputState inputState);
         void update(sf::Event event);
         bool isKeyPressed(InputKey key);
         bool isKeyReleased(InputKey key);
@@ -33,5 +34,4 @@ class Inputs
             {InputKey::Right, sf::Keyboard::Right}
         };
         std::unique_ptr<InputState> m_state;
-        bool m_hasUpdated;
 };

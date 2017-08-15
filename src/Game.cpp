@@ -20,17 +20,33 @@ void Game::addEntities()
 {
     EntityFactory entityFactory = EntityFactory();
     for (int i = 0; i < 5; ++i) {
-        auto entity = entityFactory.make();
+        std::unique_ptr<Entity> entity = entityFactory.make<Entity>();
         entity->m_position = sf::Vector2f(i*100, 0);
         m_entities.emplace_back(std::move(entity));
     }
+    std::unique_ptr<Ship> ship = entityFactory.make<Ship>();
+    ship->m_position = sf::Vector2f(1000, 200);
+    m_ship = ship.get();
+    m_entities.emplace_back(std::move(ship));
 }
 
 void Game::moveForward()
 {
-    for (auto& it : m_entities) {
-        it->m_velocity = sf::Vector2f(0, 5);
+    // Entity* entity = getEntity(1);
+    if (m_ship) {
+        m_ship->m_velocity = sf::Vector2f(0, 5);
     }
+};
+
+Entity* Game::getEntity(unsigned short id)
+{
+    for (auto& it : m_entities) {
+        if (it->m_id == id) {
+            return it.get();
+        }
+    }
+    std::cout << "Entity " << id << " not found" << std::endl;
+    return NULL;
 };
 
 void Game::stopMovingForward()
@@ -42,6 +58,7 @@ void Game::stopMovingForward()
 
 void Game::enactInputs(std::unique_ptr<Inputs> inputs)
 {
+    
     for (auto const& it : m_inputPressedFunctions) {
         if (inputs->isKeyPressed(it.first)) {
             it.second();
@@ -69,10 +86,7 @@ void Game::run()
 void Game::draw(sf::RenderWindow &window)
 {
     for (auto& it : m_entities) {
-        sf::CircleShape circle(50);
-        circle.setPosition(it->m_position);
-        circle.setFillColor(sf::Color(100, 250, 50));
-        window.draw(circle);
+        it->draw(window);
     }
 };
 

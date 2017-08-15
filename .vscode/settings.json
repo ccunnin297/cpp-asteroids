@@ -34,6 +34,9 @@
         "tuple": "cpp",
         "bitset": "cpp",
         "*.ipp": "cpp",
-        "slist": "cpp"
+        "slist": "cpp",
+        "deque": "cpp",
+        "list": "cpp",
+        "regex": "cpp"
     }
 }

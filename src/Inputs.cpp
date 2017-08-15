@@ -6,8 +6,12 @@ Inputs::Inputs()
     m_state->set_key_pressed(0);
     m_state->set_key_released(0);
     m_state->set_key_down(0);
+};
 
-    m_hasUpdated = false;
+Inputs::Inputs(InputState inputState)
+{
+    m_state = std::make_unique<InputState>();
+    setState(inputState);
 };
 
 bool Inputs::isKeyDown(InputKey key)

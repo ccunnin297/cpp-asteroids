@@ -8,9 +8,13 @@
                 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/8.1.0/include",
                 "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
                 "/usr/include",
+                "/usr/include/machine",
                 "${workspaceRoot}",
+                "${workspaceRoot}/src",
+                "${workspaceRoot}/build/gen",
                 "${workspaceRoot}/include",
-                "${workspaceRoot}/include/SFML-2.4.2-osx-clang/include"  
+                "${workspaceRoot}/include/SFML-2.4.2-osx-clang/include",
+                "${workspaceRoot}/include/protoc-3.3.0-osx-x86_64/include"
             ],
             "defines": ["SFML"],
             "intelliSenseMode": "clang-x64",
@@ -21,9 +25,13 @@
                     "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/8.1.0/include",
                     "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
                     "/usr/include",
+                    "/usr/include/machine",
                     "${workspaceRoot}",
+                    "${workspaceRoot}/src",
+                    "${workspaceRoot}/build/gen",
                     "${workspaceRoot}/include",
-                    "${workspaceRoot}/include/SFML-2.4.2-osx-clang/include"
+                    "${workspaceRoot}/include/SFML-2.4.2-osx-clang/include",
+                    "${workspaceRoot}/include/protoc-3.3.0-osx-x86_64/include"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""

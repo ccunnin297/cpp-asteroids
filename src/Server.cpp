@@ -89,8 +89,7 @@ void Server::listen()
             } else {
                 packet >> strData;
                 inputState.ParseFromString(strData);
-                auto inputs = std::make_unique<Inputs>();
-                inputs->setState(inputState);
+                auto inputs = std::make_unique<Inputs>(inputState);
                 m_game->enactInputs(std::move(inputs)); 
             }
         }

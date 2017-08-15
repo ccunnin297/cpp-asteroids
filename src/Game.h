@@ -3,6 +3,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entity.h"
+#include "Ship.h"
 #include "GameState.pb.h"
 #include "Inputs.h"
 
@@ -23,6 +24,9 @@ class Game
     private:
         void moveForward();
         void stopMovingForward();
+        Entity* getEntity(unsigned short id);
+
+        Ship* m_ship;
 
         std::vector<std::unique_ptr<Entity>> m_entities;
         std::map<InputKey, std::function<void()>> m_inputPressedFunctions;
