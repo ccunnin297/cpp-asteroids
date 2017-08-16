@@ -64,5 +64,12 @@ void Ship::shoot(Bullet* bullet)
 
 void Ship::hasCollidedWith(Entity* entity)
 {
-
+    auto type = entity->getType();
+    switch (type) {
+        case ASTEROID:
+            Entity::destroy();
+            break;
+        default:
+            break;
+    }
 };
