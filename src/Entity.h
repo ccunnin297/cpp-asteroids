@@ -15,6 +15,9 @@ class Entity
         EntityState getState();
         void setState(EntityState& entityState);
 
+        bool collidesWith(Entity* entity);
+        void hasCollidedWith(Entity* entity);
+
         unsigned short getId();
         void setId(unsigned short newId);
         sf::Vector2f getPosition();
@@ -23,6 +26,8 @@ class Entity
         void setRotation(float newRotation);
         float getVelocity();
         void setVelocity(float newVelocity);
+        sf::Rect<float> getBoundingRect();
+        void setCollisionOn(bool newCollisionOn);
     protected:
         virtual sf::Vector2f getBaseSize() { return sf::Vector2f(200, 200); };
         virtual std::string getTextureString() { return "entity.png"; };
@@ -36,5 +41,6 @@ class Entity
         sf::Vector2f m_size;
         float m_velocity;
         float m_rotation;
+        bool m_collisionOn;
     private:
 };

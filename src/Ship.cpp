@@ -6,6 +6,8 @@ Ship::Ship() : Entity()
     m_moveBackward = false;
     m_turnLeft = false;
     m_turnRight = false;
+
+    Entity::setCollisionOn(true);
 };
 
 void Ship::update()

@@ -4,6 +4,8 @@
 
 class Asteroid : public Entity
 {
+    public:
+        Asteroid();
     protected:
         sf::Vector2f getBaseSize() override { return sf::Vector2f(100, 100); };
         std::string getTextureString() override { return "asteroid.png"; };

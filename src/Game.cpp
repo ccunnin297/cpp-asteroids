@@ -26,7 +26,7 @@ void Game::addEntities()
 {
     for (int i = 0; i < 5; ++i) {
         std::unique_ptr<Asteroid> asteroid = m_entityFactory->make<Asteroid>();
-        asteroid->setPosition(sf::Vector2f(i*100, 0));
+        asteroid->setPosition(sf::Vector2f(i*200, 0));
         m_entities.emplace_back(std::move(asteroid));
     }
     std::unique_ptr<Ship> ship = m_entityFactory->make<Ship>();
@@ -126,6 +126,7 @@ void Game::run()
     for (auto& it : m_entities) {
         it->update();
     }
+    checkCollisions();
 };
 
 void Game::draw(sf::RenderWindow &window)
@@ -169,4 +170,18 @@ GameState Game::getState()
         newEntityState->CopyFrom(entityState);
     }
     return gameState;
+};
+
+void Game::checkCollisions()
+{
+    for (auto itA = m_entities.begin(); itA != m_entities.end(); ++itA) {
+        for (auto itB = std::next(itA); itB != m_entities.end(); ++itB) {
+            Entity* entityA = (*itA).get();
+            Entity* entityB = (*itB).get();
+            if (entityA->collidesWith(entityB)) {
+                entityA->hasCollidedWith(entityB);
+                entityB->hasCollidedWith(entityA);
+            }
+        }
+    }
 };

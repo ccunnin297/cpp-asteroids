@@ -35,6 +35,8 @@ class Game
 
         Entity* getEntity(unsigned short id);
 
+        void checkCollisions();
+
         unsigned short m_shipId;
 
         std::unique_ptr<EntityFactory> m_entityFactory;

@@ -7,6 +7,7 @@ Entity::Entity()
 {
     m_rotation = 0.0f;
     m_velocity = 0.0f;
+    m_collisionOn = false;
 };
 
 void Entity::init() {
@@ -34,6 +35,19 @@ void Entity::setState(EntityState& entityState)
     m_id = entityState.id();
     m_position = sf::Vector2f(entityState.position().x(), entityState.position().y());
     m_rotation = entityState.rotation();
+};
+
+bool Entity::collidesWith(Entity* entity)
+{
+    if (!entity->m_collisionOn || !entity->m_collisionOn) {
+        return false;
+    }
+    return getBoundingRect().intersects(entity->getBoundingRect());
+};
+
+void Entity::hasCollidedWith(Entity* entity)
+{
+    std::cout << "EVERYBODY RUN" << std::endl;
 };
 
 void Entity::update()
@@ -107,4 +121,14 @@ float Entity::getVelocity()
 void Entity::setVelocity(float newVelocity)
 {
     m_velocity = newVelocity;
+};
+
+sf::Rect<float> Entity::getBoundingRect()
+{
+    return sf::Rect<float>(m_position.x, m_position.y, m_size.x, m_size.y);
+};
+
+void Entity::setCollisionOn(bool newCollisionOn)
+{
+    m_collisionOn = newCollisionOn;
 };
