@@ -13,7 +13,8 @@ enum EntityType {
 message EntityState {
     required int32 id = 1;
     optional PositionState position = 2;
-    required EntityType type = 3;
+    optional float rotation = 3;
+    required EntityType type = 4;
 }
 
 message GameState {

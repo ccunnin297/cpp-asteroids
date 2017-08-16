@@ -19,6 +19,7 @@ std::unique_ptr<Entity> EntityFactory::makeFromState(EntityState& entityState) {
             e = std::make_unique<Entity>();
             break;
     }
+    e->init();
     e->setState(entityState);
     return e;
 };

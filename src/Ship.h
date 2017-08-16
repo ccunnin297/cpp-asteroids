@@ -4,9 +4,9 @@
 
 class Ship : public Entity
 {
-    public:
-        void draw(sf::RenderWindow& window) override;
-
+    protected:
+        sf::Vector2f getBaseSize() override { return sf::Vector2f(200, 200); };
+        std::string getTextureString() override { return "ship.png"; };
         EntityType getClassname() override { return EntityType::SHIP; };
     private:
 };

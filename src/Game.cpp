@@ -23,67 +23,67 @@ void Game::addEntities()
 {
     for (int i = 0; i < 5; ++i) {
         std::unique_ptr<Entity> entity = m_entityFactory->make<Entity>();
-        entity->m_position = sf::Vector2f(i*100, 0);
+        entity->setPosition(sf::Vector2f(i*100, 0));
         m_entities.emplace_back(std::move(entity));
     }
     std::unique_ptr<Ship> ship = m_entityFactory->make<Ship>();
-    ship->m_position = sf::Vector2f(1000, 200);
-    m_shipId = ship->m_id;
+    ship->setPosition(sf::Vector2f(1000, 200));
+    m_shipId = ship->getId();
     m_entities.emplace_back(std::move(ship));
 }
 
 void Game::moveForward()
 {
     auto ship = getEntity(m_shipId);
-    ship->m_forward = true;
+    ship->setMoveForward(true);
 };
 
 void Game::stopMovingForward()
 {
     auto ship = getEntity(m_shipId);
-    ship->m_forward = false;
+    ship->setMoveForward(false);
 };
 
 void Game::moveBackward()
 {
     auto ship = getEntity(m_shipId);
-    ship->m_backward = true;
+    ship->setMoveBackward(true);
 };
 
 void Game::stopMovingBackward()
 {
     auto ship = getEntity(m_shipId);
-    ship->m_backward = false;
+    ship->setMoveBackward(false);
 };
 
 void Game::turnLeft()
 {
     auto ship = getEntity(m_shipId);
-    ship->m_turnLeft = true;
+    ship->setTurnLeft(true);
 };
 
 void Game::stopTurningLeft()
 {
     auto ship = getEntity(m_shipId);
-    ship->m_turnLeft = false;
+    ship->setTurnLeft(false);
 };
 
 void Game::turnRight()
 {
     auto ship = getEntity(m_shipId);
-    ship->m_turnRight = true;
+    ship->setTurnRight(true);
 };
 
 void Game::stopTurningRight()
 {
     auto ship = getEntity(m_shipId);
-    ship->m_turnRight = false;
+    ship->setTurnRight(false);
 };
 
 Entity* Game::getEntity(unsigned short id)
 {
     for (auto& it : m_entities) {
-        if (it->m_id == id) {
+        if (it->getId() == id) {
             return it.get();
         }
     }
@@ -130,7 +130,7 @@ void Game::setState(GameState& gameState)
             m_entities.begin(), 
             m_entities.end(), 
             [&](std::unique_ptr<Entity> const& entity) {
-                return entity.get()->m_id == id;
+                return entity.get()->getId() == id;
             });
 
         if (entIt != m_entities.end()) {

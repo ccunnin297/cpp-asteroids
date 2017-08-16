@@ -12,7 +12,8 @@ class EntityFactory
         template <class T> std::unique_ptr<T> make() {
             ++m_autoIncrement;
             T t = T();
-            t.m_id = m_autoIncrement;
+            t.setId(m_autoIncrement);
+            t.init();
             return std::make_unique<T>(t);
         };
         std::unique_ptr<Entity> makeFromState(EntityState& entityState);
