@@ -6,6 +6,7 @@
 #include "Ship.h"
 #include "GameState.pb.h"
 #include "Inputs.h"
+#include "EntityFactory.h"
 
 #include <memory>
 
@@ -23,13 +24,20 @@ class Game
         void enactInputs(std::unique_ptr<Inputs> inputs);
     private:
         void moveForward();
+        void moveBackward();
         void stopMovingForward();
+        void stopMovingBackward();
+        void turnLeft();
+        void stopTurningLeft();
+        void turnRight();
+        void stopTurningRight();
+
         Entity* getEntity(unsigned short id);
 
-        Ship* m_ship;
+        unsigned short m_shipId;
 
+        std::unique_ptr<EntityFactory> m_entityFactory;
         std::vector<std::unique_ptr<Entity>> m_entities;
         std::map<InputKey, std::function<void()>> m_inputPressedFunctions;
         std::map<InputKey, std::function<void()>> m_inputReleasedFunctions;
-        std::map<InputKey, std::function<void()>> m_inputDownFunctions;
 };

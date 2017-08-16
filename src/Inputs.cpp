@@ -5,7 +5,6 @@ Inputs::Inputs()
     m_state = std::make_unique<InputState>();
     m_state->set_key_pressed(0);
     m_state->set_key_released(0);
-    m_state->set_key_down(0);
 };
 
 Inputs::Inputs(InputState inputState)
@@ -14,19 +13,14 @@ Inputs::Inputs(InputState inputState)
     setState(inputState);
 };
 
-bool Inputs::isKeyDown(InputKey key)
-{
-    return m_state->key_down() & m_keyMapping.at(key);
-};
-
 bool Inputs::isKeyPressed(InputKey key)
 {
-    return m_state->key_pressed() & m_keyMapping.at(key);
+    return m_state->key_pressed() & key;
 };
 
 bool Inputs::isKeyReleased(InputKey key)
 {
-    return m_state->key_released() & m_keyMapping.at(key);
+    return m_state->key_released() & key;
 };
 
 InputState Inputs::getState()
@@ -43,16 +37,16 @@ void Inputs::setState(InputState inputState)
 
 void Inputs::update(sf::Event event)
 {
-    m_state->set_key_pressed(0);
-    m_state->set_key_released(0);
+    // m_state->set_key_pressed(0);
+    // m_state->set_key_released(0);
     for (auto const& it : m_keyMapping) {
         if (event.key.code == it.second) {
             if (event.type == sf::Event::KeyPressed) {
                  m_state->set_key_pressed(m_state->key_pressed()|it.first);
-                 m_state->set_key_down(m_state->key_down()|it.first);
+                 m_state->set_key_released(m_state->key_released()&~it.first);
             } else if(event.type == sf::Event::KeyReleased) {
                 m_state->set_key_released(m_state->key_released()|it.first);
-                m_state->set_key_down(m_state->key_down()&~it.first);
+                m_state->set_key_pressed(m_state->key_pressed()&~it.first);
             }
         }
     }

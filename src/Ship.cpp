@@ -1,14 +1,10 @@
 #include "Ship.h"
 
-Ship::Ship(unsigned short id) : Entity(id)
-{
-
-};
-
 void Ship::draw(sf::RenderWindow& window)
 {
-    sf::CircleShape circle(25);
-    circle.setPosition(m_position);
-    circle.setFillColor(sf::Color(0, 50, 200));
-    window.draw(circle);
+    sf::CircleShape triangle(25, 3);
+    triangle.setPosition(m_position);
+    triangle.setRotation(m_rotation);
+    triangle.setFillColor(sf::Color(0, 50, 200));
+    window.draw(triangle);
 };

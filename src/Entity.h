@@ -6,17 +6,22 @@
 class Entity
 {
     public:
-        Entity(unsigned short id);
-        Entity(EntityState& entityState);
         EntityState getState();
         void setState(EntityState& entityState);
 
         void update();
         virtual void draw(sf::RenderWindow& window);
 
+        virtual EntityType getClassname() { return EntityType::ENTITY; };
+
         unsigned short m_id;
         sf::Vector2f m_position;
-        sf::Vector2f m_velocity;
+        float m_velocity;
         int m_rotation;
+
+        bool m_forward;
+        bool m_backward;
+        bool m_turnLeft;
+        bool m_turnRight;
     private:
 };

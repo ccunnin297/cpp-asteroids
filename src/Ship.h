@@ -5,7 +5,8 @@
 class Ship : public Entity
 {
     public:
-        Ship(unsigned short id);
-        virtual void draw(sf::RenderWindow& window);
+        void draw(sf::RenderWindow& window) override;
+
+        EntityType getClassname() override { return EntityType::SHIP; };
     private:
 };

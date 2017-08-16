@@ -37,6 +37,9 @@
         "slist": "cpp",
         "deque": "cpp",
         "list": "cpp",
-        "regex": "cpp"
+        "regex": "cpp",
+        "cmath": "cpp",
+        "complex": "cpp",
+        "valarray": "cpp"
     }
 }

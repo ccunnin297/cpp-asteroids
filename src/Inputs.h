@@ -25,7 +25,6 @@ class Inputs
         void update(sf::Event event);
         bool isKeyPressed(InputKey key);
         bool isKeyReleased(InputKey key);
-        bool isKeyDown(InputKey key);
     private:
         const std::map<InputKey, sf::Keyboard::Key> m_keyMapping = {
             {InputKey::Forward, sf::Keyboard::Up},

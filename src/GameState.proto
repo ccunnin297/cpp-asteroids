@@ -5,9 +5,15 @@ message PositionState {
     optional float y = 2;
 }
 
+enum EntityType {
+    ENTITY = 0;
+    SHIP = 1;
+};
+
 message EntityState {
     required int32 id = 1;
     optional PositionState position = 2;
+    required EntityType type = 3;
 }
 
 message GameState {

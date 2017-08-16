@@ -34,7 +34,7 @@ void Client::listen()
         } else {
             packet >> strData;
             gameState.ParseFromString(strData);
-            m_game->setState(gameState); 
+            m_game->setState(gameState);
         }
     }
 };
@@ -42,6 +42,7 @@ void Client::listen()
 void Client::run()
 {
     sf::RenderWindow window(sf::VideoMode(2000, 1000), "SFML works!");
+    window.setKeyRepeatEnabled(false);
 
     sf::Clock clock;
     while (window.isOpen())
@@ -51,13 +52,15 @@ void Client::run()
         {
             if (event.type == sf::Event::Closed)
                 window.close();
+
+            if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) {
+                updateInputs(event);
+            }
         }
 
         sf::Time elapsed = clock.getElapsedTime();
         if (elapsed.asMilliseconds() >= 33) { //30 ticks per second
-            if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased) {
-                updateInputs(event);
-            }
+            
             m_game->run();
             draw(window);
             clock.restart();
