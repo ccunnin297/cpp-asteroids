@@ -11,7 +11,8 @@ enum InputKey {
     Forward=        1<<0,
     Back=           1<<1,
     Left=           1<<2,
-    Right=          1<<3
+    Right=          1<<3,
+    Shoot=          1<<4
 };
 
 class Inputs
@@ -30,7 +31,8 @@ class Inputs
             {InputKey::Forward, sf::Keyboard::Up},
             {InputKey::Back, sf::Keyboard::Down},
             {InputKey::Left, sf::Keyboard::Left},
-            {InputKey::Right, sf::Keyboard::Right}
+            {InputKey::Right, sf::Keyboard::Right},
+            {InputKey::Shoot, sf::Keyboard::Space}
         };
         std::unique_ptr<InputState> m_state;
 };

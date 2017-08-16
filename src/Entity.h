@@ -9,21 +9,20 @@ class Entity
         Entity();
 
         void init();
+        virtual void update();
+        void draw(sf::RenderWindow& window);
+
         EntityState getState();
         void setState(EntityState& entityState);
-        void update();
-        void draw(sf::RenderWindow& window);
 
         unsigned short getId();
         void setId(unsigned short newId);
-
         sf::Vector2f getPosition();
         void setPosition(sf::Vector2f newPosition);
-
-        void setMoveForward(bool const newMoveForward);
-        void setMoveBackward(bool const newMoveBackward);
-        void setTurnLeft(bool const newTurnLeft);
-        void setTurnRight(bool const newTurnRight);
+        float getRotation();
+        void setRotation(float newRotation);
+        float getVelocity();
+        void setVelocity(float newVelocity);
     protected:
         virtual sf::Vector2f getBaseSize() { return sf::Vector2f(200, 200); };
         virtual std::string getTextureString() { return "entity.png"; };
@@ -37,10 +36,5 @@ class Entity
         sf::Vector2f m_size;
         float m_velocity;
         float m_rotation;
-
-        bool m_moveForward;
-        bool m_moveBackward;
-        bool m_turnLeft;
-        bool m_turnRight;
     private:
 };

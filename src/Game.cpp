@@ -8,23 +8,26 @@ Game::Game()
         {InputKey::Forward, std::bind(&Game::moveForward, this)},
         {InputKey::Back, std::bind(&Game::moveBackward, this)},
         {InputKey::Left, std::bind(&Game::turnLeft, this)},
-        {InputKey::Right, std::bind(&Game::turnRight, this)}
+        {InputKey::Right, std::bind(&Game::turnRight, this)},
+        {InputKey::Shoot, std::bind(&Game::shoot, this)}
     };
     m_inputReleasedFunctions = {
         {InputKey::Forward, std::bind(&Game::stopMovingForward, this)},
         {InputKey::Back, std::bind(&Game::stopMovingBackward, this)},
         {InputKey::Left, std::bind(&Game::stopTurningLeft, this)},
-        {InputKey::Right, std::bind(&Game::stopTurningRight, this)}
+        {InputKey::Right, std::bind(&Game::stopTurningRight, this)},
+        {InputKey::Shoot, std::bind(&Game::stopShooting, this)}
     };
     m_entityFactory = std::make_unique<EntityFactory>();
 };
 
+//TODO: combine entityFactory make and emplace_back with a lambda for simple constructor function
 void Game::addEntities()
 {
     for (int i = 0; i < 5; ++i) {
-        std::unique_ptr<Entity> entity = m_entityFactory->make<Entity>();
-        entity->setPosition(sf::Vector2f(i*100, 0));
-        m_entities.emplace_back(std::move(entity));
+        std::unique_ptr<Asteroid> asteroid = m_entityFactory->make<Asteroid>();
+        asteroid->setPosition(sf::Vector2f(i*100, 0));
+        m_entities.emplace_back(std::move(asteroid));
     }
     std::unique_ptr<Ship> ship = m_entityFactory->make<Ship>();
     ship->setPosition(sf::Vector2f(1000, 200));
@@ -34,50 +37,63 @@ void Game::addEntities()
 
 void Game::moveForward()
 {
-    auto ship = getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(m_shipId);
     ship->setMoveForward(true);
 };
 
 void Game::stopMovingForward()
 {
-    auto ship = getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(m_shipId);
     ship->setMoveForward(false);
 };
 
 void Game::moveBackward()
 {
-    auto ship = getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(m_shipId);
     ship->setMoveBackward(true);
 };
 
 void Game::stopMovingBackward()
 {
-    auto ship = getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(m_shipId);
     ship->setMoveBackward(false);
 };
 
 void Game::turnLeft()
 {
-    auto ship = getEntity(m_shipId);
+    Ship* ship = (Ship*)getEntity(m_shipId);
     ship->setTurnLeft(true);
 };
 
 void Game::stopTurningLeft()
 {
-    auto ship = getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(m_shipId);
     ship->setTurnLeft(false);
 };
 
 void Game::turnRight()
 {
-    auto ship = getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(m_shipId);
     ship->setTurnRight(true);
 };
 
 void Game::stopTurningRight()
 {
-    auto ship = getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(m_shipId);
     ship->setTurnRight(false);
+};
+
+void Game::shoot()
+{
+    auto ship = (Ship*)getEntity(m_shipId);
+    auto bullet = m_entityFactory->make<Bullet>();
+    ship->shoot(bullet.get());
+    m_entities.emplace_back(std::move(bullet));
+};
+
+void Game::stopShooting()
+{
+
 };
 
 Entity* Game::getEntity(unsigned short id)

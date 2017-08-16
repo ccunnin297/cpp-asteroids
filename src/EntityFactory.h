@@ -4,6 +4,9 @@
 
 #include "Entity.h"
 #include "GameState.pb.h"
+#include "Ship.h"
+#include "Asteroid.h"
+#include "Bullet.h"
 
 class EntityFactory
 {

@@ -37,8 +37,6 @@ void Inputs::setState(InputState inputState)
 
 void Inputs::update(sf::Event event)
 {
-    // m_state->set_key_pressed(0);
-    // m_state->set_key_released(0);
     for (auto const& it : m_keyMapping) {
         if (event.key.code == it.second) {
             if (event.type == sf::Event::KeyPressed) {

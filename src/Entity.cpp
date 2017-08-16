@@ -5,11 +5,6 @@
 
 Entity::Entity()
 {
-    m_moveForward = false;
-    m_moveBackward = false;
-    m_turnLeft = false;
-    m_turnRight = false;
-
     m_rotation = 0.0f;
     m_velocity = 0.0f;
 };
@@ -43,24 +38,6 @@ void Entity::setState(EntityState& entityState)
 
 void Entity::update()
 {
-    m_velocity = 0.0f;
-
-    if (m_moveForward) {
-        m_velocity = 5;
-    }
-
-    if (m_moveBackward) {
-        m_velocity -= 5;
-    }
-
-    if (m_turnLeft) {
-        m_rotation -= 1;
-    }
-
-    if (m_turnRight) {
-        m_rotation += 1;
-    }
-
     float radians = m_rotation * M_PI / 180.0f;
     float len = sqrt(pow(cos(radians),2)+pow(sin(radians),2));
     sf::Vector2f velocityVector = sf::Vector2f(cos(radians), sin(radians))/len * m_velocity;
@@ -69,10 +46,26 @@ void Entity::update()
 
 void Entity::draw(sf::RenderWindow& window)
 {
-    m_sprite.setOrigin(floor(m_sprite.getLocalBounds().width/2),floor(m_sprite.getLocalBounds().height/2));
+    //TODO: use textureManager
     m_sprite.setTexture(m_texture);
-    m_sprite.setPosition(m_position);
+
+    //ensure sprite is m_size, so scale up/down from texture size
+    float xScale = m_size.x / m_texture.getSize().x;
+    float yScale = m_size.y / m_texture.getSize().y;
+    m_sprite.setScale(xScale, yScale);
+
+    //center sprite on middle
+    //floor
+    m_sprite.setOrigin(m_sprite.getLocalBounds().width/2,m_sprite.getLocalBounds().height/2);
+
+    //since origin is center and m_position is topLeft, adjust the spritePosition for sprite
+    float spritePosX = m_position.x+m_sprite.getLocalBounds().width/2;
+    float spritePosY = m_position.y+m_sprite.getLocalBounds().height/2;
+    m_sprite.setPosition(sf::Vector2f(spritePosX, spritePosY));
+    
+    //Default rotation to up instead of facing to the side
     m_sprite.setRotation(90+m_rotation);
+
     window.draw(m_sprite);
 };
 
@@ -96,22 +89,22 @@ void Entity::setPosition(sf::Vector2f newPosition)
     m_position = newPosition;
 };
 
-void Entity::setMoveForward(bool const newMoveForward)
+float Entity::getRotation()
 {
-    m_moveForward = newMoveForward;
+    return m_rotation;
 };
 
-void Entity::setMoveBackward(bool const newMoveBackward)
+void Entity::setRotation(float newRotation)
 {
-    m_moveBackward = newMoveBackward;
+    m_rotation = newRotation;
 };
 
-void Entity::setTurnLeft(bool const newTurnLeft)
+float Entity::getVelocity()
 {
-    m_turnLeft = newTurnLeft;
+    return m_velocity;
 };
 
-void Entity::setTurnRight(bool const newTurnRight)
+void Entity::setVelocity(float newVelocity)
 {
-    m_turnRight = newTurnRight;
+    m_velocity = newVelocity;
 };

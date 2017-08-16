@@ -3,7 +3,6 @@
 #include <SFML/Graphics.hpp>
 
 #include "Entity.h"
-#include "Ship.h"
 #include "GameState.pb.h"
 #include "Inputs.h"
 #include "EntityFactory.h"
@@ -31,6 +30,8 @@ class Game
         void stopTurningLeft();
         void turnRight();
         void stopTurningRight();
+        void shoot();
+        void stopShooting();
 
         Entity* getEntity(unsigned short id);
 

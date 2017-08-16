@@ -8,6 +8,8 @@ message PositionState {
 enum EntityType {
     ENTITY = 0;
     SHIP = 1;
+    ASTEROID = 2;
+    BULLET = 3;
 };
 
 message EntityState {
