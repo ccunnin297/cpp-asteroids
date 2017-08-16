@@ -8,6 +8,7 @@ Entity::Entity()
     m_rotation = 0.0f;
     m_velocity = 0.0f;
     m_collisionOn = false;
+    m_destroy = false;
 };
 
 void Entity::init() {
@@ -22,11 +23,12 @@ EntityState Entity::getState()
 {
     EntityState entityState;
     entityState.set_id(m_id);
-    entityState.set_type(getClassname());
+    entityState.set_type(getType());
     auto* position = entityState.mutable_position();
     position->set_x(m_position.x);
     position->set_y(m_position.y);
     entityState.set_rotation(m_rotation);
+    entityState.set_destroy(m_destroy);
     return entityState;
 };
 
@@ -35,6 +37,7 @@ void Entity::setState(EntityState& entityState)
     m_id = entityState.id();
     m_position = sf::Vector2f(entityState.position().x(), entityState.position().y());
     m_rotation = entityState.rotation();
+    m_destroy = entityState.destroy();
 };
 
 bool Entity::collidesWith(Entity* entity)
@@ -47,7 +50,7 @@ bool Entity::collidesWith(Entity* entity)
 
 void Entity::hasCollidedWith(Entity* entity)
 {
-    std::cout << "EVERYBODY RUN" << std::endl;
+
 };
 
 void Entity::update()
@@ -131,4 +134,14 @@ sf::Rect<float> Entity::getBoundingRect()
 void Entity::setCollisionOn(bool newCollisionOn)
 {
     m_collisionOn = newCollisionOn;
+};
+
+bool Entity::shouldDestroy()
+{
+    return m_destroy;
+};
+
+void Entity::destroy()
+{
+    m_destroy = true;
 };

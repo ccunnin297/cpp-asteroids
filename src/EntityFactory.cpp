@@ -10,13 +10,13 @@ EntityFactory::EntityFactory()
 std::unique_ptr<Entity> EntityFactory::makeFromState(EntityState& entityState) {
     std::unique_ptr<Entity> e;
     switch (entityState.type()) {
-        case EntityType::BULLET:
+        case BULLET:
             e = (std::unique_ptr<Entity>)std::make_unique<Bullet>();
             break;
-        case EntityType::SHIP:
+        case SHIP:
             e = (std::unique_ptr<Entity>)std::make_unique<Ship>();
             break;
-        case EntityType::ASTEROID:
+        case ASTEROID:
             e = (std::unique_ptr<Entity>)std::make_unique<Asteroid>();
             break;
         default:

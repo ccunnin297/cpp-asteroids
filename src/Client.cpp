@@ -62,6 +62,7 @@ void Client::run()
         if (elapsed.asMilliseconds() >= 33) { //30 ticks per second
             
             m_game->run();
+            m_game->cleanup();
             draw(window);
             clock.restart();
         }

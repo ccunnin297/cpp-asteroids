@@ -20,10 +20,10 @@ void Ship::update()
         m_velocity = -5;
     }
     if (m_turnLeft) {
-        m_rotation -= 1;
+        m_rotation -= 3;
     }
     if (m_turnRight) {
-        m_rotation += 1;
+        m_rotation += 3;
     }
 
     Entity::update();
@@ -60,4 +60,9 @@ void Ship::shoot(Bullet* bullet)
     bullet->setRotation(m_rotation);
 
     bullet->setVelocity(5);
+};
+
+void Ship::hasCollidedWith(Entity* entity)
+{
+
 };

@@ -129,6 +129,11 @@ void Game::run()
     checkCollisions();
 };
 
+void Game::cleanup()
+{
+    cleanupEntities();
+};
+
 void Game::draw(sf::RenderWindow &window)
 {
     for (auto& it : m_entities) {
@@ -176,12 +181,28 @@ void Game::checkCollisions()
 {
     for (auto itA = m_entities.begin(); itA != m_entities.end(); ++itA) {
         for (auto itB = std::next(itA); itB != m_entities.end(); ++itB) {
-            Entity* entityA = (*itA).get();
-            Entity* entityB = (*itB).get();
+            auto entityA = (*itA).get();
+            auto entityB = (*itB).get();
             if (entityA->collidesWith(entityB)) {
                 entityA->hasCollidedWith(entityB);
                 entityB->hasCollidedWith(entityA);
             }
         }
     }
+};
+
+void Game::cleanupEntities()
+{   
+    for (auto it = findEntityToDestroy(); it != m_entities.end(); it = findEntityToDestroy()) {
+        m_entities.erase(std::remove(m_entities.begin(), m_entities.end(), *it));
+        std::move(it);
+    }
+};
+
+std::vector<std::unique_ptr<Entity>>::iterator Game::findEntityToDestroy()
+{
+    return find_if(m_entities.begin(), m_entities.end(), 
+        [&](auto& entity) {
+            return entity->shouldDestroy();
+        });
 };

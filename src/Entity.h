@@ -8,6 +8,8 @@ class Entity
     public:
         Entity();
 
+        virtual EntityType getType() { return EntityType::ENTITY; };
+
         void init();
         virtual void update();
         void draw(sf::RenderWindow& window);
@@ -16,7 +18,10 @@ class Entity
         void setState(EntityState& entityState);
 
         bool collidesWith(Entity* entity);
-        void hasCollidedWith(Entity* entity);
+        virtual void hasCollidedWith(Entity* entity);
+
+        bool shouldDestroy();
+        void destroy();
 
         unsigned short getId();
         void setId(unsigned short newId);
@@ -31,7 +36,6 @@ class Entity
     protected:
         virtual sf::Vector2f getBaseSize() { return sf::Vector2f(200, 200); };
         virtual std::string getTextureString() { return "entity.png"; };
-        virtual EntityType getClassname() { return EntityType::ENTITY; };
 
         sf::Sprite m_sprite;
         sf::Texture m_texture;
@@ -42,5 +46,7 @@ class Entity
         float m_velocity;
         float m_rotation;
         bool m_collisionOn;
+
+        bool m_destroy;
     private:
 };

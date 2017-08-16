@@ -55,6 +55,7 @@ void Server::run()
         // if (elapsed.asMilliseconds() >= 1000) { //1 tick per second
             m_game->run();
             updateClient();
+            m_game->cleanup();
             clock.restart();
         }
         

@@ -17,6 +17,7 @@ class Game
         void addEntities();
         void run();
         void draw(sf::RenderWindow &window);
+        void cleanup();
 
         void setState(GameState& gameState);
         GameState getState();
@@ -34,8 +35,10 @@ class Game
         void stopShooting();
 
         Entity* getEntity(unsigned short id);
+        std::vector<std::unique_ptr<Entity>>::iterator findEntityToDestroy();
 
         void checkCollisions();
+        void cleanupEntities();
 
         unsigned short m_shipId;
 

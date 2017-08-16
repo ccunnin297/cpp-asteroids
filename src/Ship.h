@@ -8,7 +8,10 @@ class Ship : public Entity
     public:
         Ship();
 
+        EntityType getType() override { return EntityType::SHIP; };
+
         void update() override;
+        void hasCollidedWith(Entity* entity) override;
     
         void setMoveForward(bool const newMoveForward);
         void setMoveBackward(bool const newMoveBackward);
@@ -19,7 +22,6 @@ class Ship : public Entity
     protected:
         sf::Vector2f getBaseSize() override { return sf::Vector2f(50, 50); };
         std::string getTextureString() override { return "ship.png"; };
-        EntityType getClassname() override { return EntityType::SHIP; };
 
         bool m_moveForward;
         bool m_moveBackward;
