@@ -1,7 +1,8 @@
 #include "Client.h"
 
-#include <iostream>
+#include "GameValues.h"
 
+#include <iostream>
 
 Client::Client()
 {
@@ -41,7 +42,7 @@ void Client::listen()
 
 void Client::run()
 {
-    sf::RenderWindow window(sf::VideoMode(2000, 1000), "SFML works!");
+    sf::RenderWindow window(sf::VideoMode(GAME_BOUNDS_X, GAME_BOUNDS_Y), "cpp-asteroids");
     window.setKeyRepeatEnabled(false);
 
     sf::Clock clock;

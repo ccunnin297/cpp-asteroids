@@ -1,6 +1,8 @@
 #include "Entity.h"
 
-#include <cmath>
+#include "GameValues.h"
+#include "utils.h"
+
 #include <iostream>
 
 Entity::Entity()
@@ -13,6 +15,8 @@ Entity::Entity()
 
 void Entity::init() {
     m_size = getBaseSize();
+    //TODO: make this a bit smarter
+    m_collisionRadius = m_size.x/2.0f;
     std::string filename = "assets/" + getTextureString();
     if (!m_texture.loadFromFile(filename)) {
         std::cout << "Missing asset:" << filename << std::endl;
@@ -45,7 +49,8 @@ bool Entity::collidesWith(Entity* entity)
     if (!entity->m_collisionOn || !entity->m_collisionOn) {
         return false;
     }
-    return getBoundingRect().intersects(entity->getBoundingRect());
+    //distance from centers < radius
+    return distance(getCenter(), entity->getCenter()) < entity->getCollisionRadius() + getCollisionRadius();
 };
 
 void Entity::hasCollidedWith(Entity* entity)
@@ -55,10 +60,23 @@ void Entity::hasCollidedWith(Entity* entity)
 
 void Entity::update()
 {
-    float radians = m_rotation * M_PI / 180.0f;
-    float len = sqrt(pow(cos(radians),2)+pow(sin(radians),2));
-    sf::Vector2f velocityVector = sf::Vector2f(cos(radians), sin(radians))/len * m_velocity;
+    float radians = degreesToRadians(m_rotation);
+    sf::Vector2f unitVector = unitVectorFromRadians(radians);
+    sf::Vector2f velocityVector = unitVector * m_velocity;
     m_position += velocityVector;
+
+    // if going offscreen, continue through the other side
+    auto center = getCenter();
+    if (center.x < 0) {
+        m_position.x = GAME_BOUNDS_X - (0 - m_position.x);
+    } else if (center.x > GAME_BOUNDS_X) {
+        m_position.x = 0 + (m_position.x - GAME_BOUNDS_X);
+    }
+    if (center.y < 0) {
+        m_position.y = GAME_BOUNDS_Y - (0 - m_position.y);
+    } else if (center.y > GAME_BOUNDS_Y) {
+        m_position.y = 0 + (m_position.y - GAME_BOUNDS_Y);
+    }
 };
 
 void Entity::draw(sf::RenderWindow& window)
@@ -72,13 +90,11 @@ void Entity::draw(sf::RenderWindow& window)
     m_sprite.setScale(xScale, yScale);
 
     //center sprite on middle
-    //floor
+    //TODO: see if floor is necessary
     m_sprite.setOrigin(m_sprite.getLocalBounds().width/2,m_sprite.getLocalBounds().height/2);
 
     //since origin is center and m_position is topLeft, adjust the spritePosition for sprite
-    float spritePosX = m_position.x+m_sprite.getLocalBounds().width/2;
-    float spritePosY = m_position.y+m_sprite.getLocalBounds().height/2;
-    m_sprite.setPosition(sf::Vector2f(spritePosX, spritePosY));
+    m_sprite.setPosition(getCenter());
     
     //Default rotation to up instead of facing to the side
     m_sprite.setRotation(90+m_rotation);
@@ -126,14 +142,19 @@ void Entity::setVelocity(float newVelocity)
     m_velocity = newVelocity;
 };
 
-sf::Rect<float> Entity::getBoundingRect()
-{
-    return sf::Rect<float>(m_position.x, m_position.y, m_size.x, m_size.y);
-};
-
 void Entity::setCollisionOn(bool newCollisionOn)
 {
     m_collisionOn = newCollisionOn;
+};
+
+sf::Vector2f Entity::getCenter()
+{
+    return m_position + m_size / 2.0f;
+};
+
+float Entity::getCollisionRadius()
+{
+    return m_collisionRadius;
 };
 
 bool Entity::shouldDestroy()

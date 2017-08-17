@@ -1,5 +1,7 @@
 #include "Ship.h"
 
+#include "GameValues.h"
+
 Ship::Ship() : Entity()
 {
     m_moveForward = false;
@@ -14,16 +16,16 @@ void Ship::update()
 {
     m_velocity = 0.0f;
     if (m_moveForward) {
-        m_velocity = 5;
+        m_velocity = SHIP_VELOCITY;
     }
     if (m_moveBackward) {
-        m_velocity = -5;
+        m_velocity = -SHIP_VELOCITY;
     }
     if (m_turnLeft) {
-        m_rotation -= 3;
+        m_rotation -= SHIP_TURN_SPEED;
     }
     if (m_turnRight) {
-        m_rotation += 3;
+        m_rotation += SHIP_TURN_SPEED;
     }
 
     Entity::update();
@@ -59,7 +61,7 @@ void Ship::shoot(Bullet* bullet)
     //should travel along the same angle as the ship's current rotation
     bullet->setRotation(m_rotation);
 
-    bullet->setVelocity(5);
+    bullet->setVelocity(BULLET_VELOCITY);
 };
 
 void Ship::hasCollidedWith(Entity* entity)

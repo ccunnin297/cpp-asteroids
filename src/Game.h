@@ -14,7 +14,7 @@ class Game
     public:
         Game();
 
-        void addEntities();
+        void init();
         void run();
         void draw(sf::RenderWindow &window);
         void cleanup();
@@ -33,6 +33,9 @@ class Game
         void stopTurningRight();
         void shoot();
         void stopShooting();
+
+        void addShip();
+        void addAsteroids();
 
         Entity* getEntity(unsigned short id);
         std::vector<std::unique_ptr<Entity>>::iterator findEntityToDestroy();

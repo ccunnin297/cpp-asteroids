@@ -31,8 +31,9 @@ class Entity
         void setRotation(float newRotation);
         float getVelocity();
         void setVelocity(float newVelocity);
-        sf::Rect<float> getBoundingRect();
         void setCollisionOn(bool newCollisionOn);
+        sf::Vector2f getCenter();
+        float getCollisionRadius();
     protected:
         virtual sf::Vector2f getBaseSize() { return sf::Vector2f(200, 200); };
         virtual std::string getTextureString() { return "entity.png"; };
@@ -45,6 +46,7 @@ class Entity
         sf::Vector2f m_size;
         float m_velocity;
         float m_rotation;
+        float m_collisionRadius;
         bool m_collisionOn;
 
         bool m_destroy;
