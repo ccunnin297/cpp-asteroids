@@ -7,8 +7,17 @@
 Client::Client()
 {
     m_socket = std::make_unique<sf::TcpSocket>();
-    m_game = std::make_unique<Game>();
+    m_game = std::make_unique<ClientGame>(this);
+    m_mainMenu = std::make_unique<MainMenu>(this);
     m_inputs = std::make_unique<Inputs>();
+
+    m_phase = Menu;
+};
+
+void Client::startServer()
+{
+    m_server = std::make_unique<Server>(NETWORK_PORT);
+    m_server->start();
 };
 
 //TCP
@@ -61,25 +70,51 @@ void Client::run()
 
         sf::Time elapsed = clock.getElapsedTime();
         if (elapsed.asMilliseconds() >= 33) { //30 ticks per second
+            window.clear();
+
+            switch (m_phase) {
+                case Game:
+                    m_game->run();
+                    m_game->cleanup();
+                    m_game->draw(window);
+                    break;
+                case Menu:
+                    m_mainMenu->acceptInputs(m_inputs.get());
+                    m_mainMenu->run();
+                    m_mainMenu->draw(window);
+                    break;
+                default:
+                    break;
+            }
             
-            m_game->run();
-            m_game->cleanup();
-            draw(window);
+            window.display();
             clock.restart();
         }
-
-        //Draw GUI
-        // if (elapsed.asMilliseconds() >= 33) { //30 frames per second
-            
-        // }
-    }
+    }    
 };
 
-void Client::draw(sf::RenderWindow &window)
+void Client::hostGame()
 {
-    window.clear();
-    m_game->draw(window);
-    window.display();
+    startServer();
+    connectToGame("127.0.0.1");
+};
+
+void Client::connectToGame(sf::IpAddress address)
+{
+    connectToServer(address, NETWORK_PORT);
+    openGame();
+};
+
+void Client::openGame()
+{
+    m_game->reset();
+    m_phase = Game;
+};
+
+void Client::openMainMenu()
+{
+    m_mainMenu->reset();
+    m_phase = Menu;
 };
 
 void Client::updateInputs(sf::Event event)

@@ -7,28 +7,41 @@
 
 Game::Game()
 {
+    m_phase = GameReady;
+
     m_inputPressedFunctions = {
-        {InputKey::Forward, std::bind(&Game::moveForward, this)},
-        {InputKey::Back, std::bind(&Game::moveBackward, this)},
-        {InputKey::Left, std::bind(&Game::turnLeft, this)},
-        {InputKey::Right, std::bind(&Game::turnRight, this)},
-        {InputKey::Shoot, std::bind(&Game::shoot, this)}
+        {
+            GameReady, {
+                {MenuAction, std::bind(&Game::start, this)}
+            },
+        },
+        {
+            GameRunning, {
+                {Forward, std::bind(&Game::moveForward, this)},
+                {Back, std::bind(&Game::moveBackward, this)},
+                {Left, std::bind(&Game::turnLeft, this)},
+                {Right, std::bind(&Game::turnRight, this)},
+                {Shoot, std::bind(&Game::shoot, this)},
+            },
+        },
+        {
+            GameOver, {
+                {MenuAction, std::bind(&Game::start, this)}
+            }
+        }
     };
     m_inputReleasedFunctions = {
-        {InputKey::Forward, std::bind(&Game::stopMovingForward, this)},
-        {InputKey::Back, std::bind(&Game::stopMovingBackward, this)},
-        {InputKey::Left, std::bind(&Game::stopTurningLeft, this)},
-        {InputKey::Right, std::bind(&Game::stopTurningRight, this)},
-        {InputKey::Shoot, std::bind(&Game::stopShooting, this)}
+        {
+            GameRunning, {
+                {Forward, std::bind(&Game::stopMovingForward, this)},
+                {Back, std::bind(&Game::stopMovingBackward, this)},
+                {Left, std::bind(&Game::stopTurningLeft, this)},
+                {Right, std::bind(&Game::stopTurningRight, this)}
+            }
+        }
     };
     m_entityFactory = std::make_unique<EntityFactory>();
 };
-
-void Game::init()
-{
-    addShip();
-    addAsteroids();
-}
 
 void Game::addAsteroids()
 {
@@ -131,9 +144,20 @@ void Game::shoot()
     }
 };
 
-void Game::stopShooting()
+void Game::start()
 {
+    clearEntities();
 
+    addShip();
+    addAsteroids();
+    m_phase = GameRunning;
+};
+
+void Game::clearEntities()
+{
+    for (auto& it : m_entities) {
+        it->destroy();
+    }
 };
 
 Entity* Game::getEntity(unsigned short id)
@@ -149,14 +173,21 @@ Entity* Game::getEntity(unsigned short id)
 
 void Game::enactInputs(std::unique_ptr<Inputs> inputs)
 {
-    for (auto const& it : m_inputPressedFunctions) {
-        if (inputs->isKeyPressed(it.first)) {
-            it.second();
+    if(m_inputPressedFunctions.count(m_phase) != 0) {
+        auto pressedFuncs = m_inputPressedFunctions.at(m_phase);
+        for (auto const& it : pressedFuncs) {
+            if (inputs->isKeyPressed(it.first)) {
+                it.second();
+            }
         }
     }
-    for (auto const& it : m_inputReleasedFunctions) {
-        if (inputs->isKeyReleased(it.first)) {
-            it.second();
+    
+    if(m_inputReleasedFunctions.count(m_phase) != 0) {
+        auto releasedFuncs = m_inputReleasedFunctions.at(m_phase);
+        for (auto const& it : releasedFuncs) {
+            if (inputs->isKeyReleased(it.first)) {
+                it.second();
+            }
         }
     }
 }
@@ -171,7 +202,24 @@ void Game::run()
 
 void Game::cleanup()
 {
+    checkGameOver();
     cleanupEntities();
+};
+
+void Game::reset()
+{
+    cleanup();
+    m_phase = GameReady;
+};
+
+void Game::checkGameOver()
+{
+    if (m_phase == GameRunning) {
+        auto ship = (Ship*)getEntity(m_shipId);
+        if (!ship) {
+            m_phase = GameOver;
+        }
+    }
 };
 
 void Game::draw(sf::RenderWindow &window)

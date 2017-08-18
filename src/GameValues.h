@@ -14,3 +14,5 @@
 
 #define GAME_BOUNDS_X 2000
 #define GAME_BOUNDS_Y 1000
+
+#define NETWORK_PORT 50001

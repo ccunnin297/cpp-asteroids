@@ -26,8 +26,6 @@ void Server::start()
     m_runnerThread->detach();
     m_listenerThread = std::make_unique<std::thread>([=] { listen(); });
     m_listenerThread->detach();
-
-    m_game->init();
 }
 
 void Server::waitForClients()

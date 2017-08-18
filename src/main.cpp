@@ -12,15 +12,8 @@ int main() {
     //seed random number generator
     srand((unsigned)time(NULL));
 
-    const unsigned short port = 50001;
-
-    //Start server
-    Server server(port);
-    server.start();
-
     //Start and connect client
     Client client;
-    client.connectToServer("127.0.0.1", port);
 
     //Start client -- this will block thread until opened window is closed
     client.run();
@@ -28,5 +21,5 @@ int main() {
     // Optional:  Delete all global objects allocated by libprotobuf.
     google::protobuf::ShutdownProtobufLibrary();
 
-    return 0;
+    return EXIT_SUCCESS;
 }

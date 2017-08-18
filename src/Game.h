@@ -9,15 +9,22 @@
 
 #include <memory>
 
+enum GamePhase {
+    GameReady,
+    GameRunning,
+    GameOver
+};
+
 class Game
 {
     public:
         Game();
 
-        void init();
         void run();
         void draw(sf::RenderWindow &window);
         void cleanup();
+
+        void reset();
 
         void setState(GameState& gameState);
         GameState getState();
@@ -32,8 +39,9 @@ class Game
         void turnRight();
         void stopTurningRight();
         void shoot();
-        void stopShooting();
+        void start();
 
+        void clearEntities();
         void addShip();
         void addAsteroids();
 
@@ -42,11 +50,14 @@ class Game
 
         void checkCollisions();
         void cleanupEntities();
+        void checkGameOver();
 
         unsigned short m_shipId;
+        GamePhase m_phase;
 
         std::unique_ptr<EntityFactory> m_entityFactory;
         std::vector<std::unique_ptr<Entity>> m_entities;
-        std::map<InputKey, std::function<void()>> m_inputPressedFunctions;
-        std::map<InputKey, std::function<void()>> m_inputReleasedFunctions;
+
+        std::map<GamePhase, std::map<InputKey, std::function<void()>>> m_inputPressedFunctions;
+        std::map<GamePhase, std::map<InputKey, std::function<void()>>> m_inputReleasedFunctions;
 };
