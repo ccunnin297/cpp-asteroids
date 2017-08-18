@@ -24,8 +24,6 @@ class Game
         void draw(sf::RenderWindow &window);
         void cleanup();
 
-        void reset();
-
         void setState(GameState& gameState);
         GameState getState();
         void enactInputs(std::unique_ptr<Inputs> inputs);

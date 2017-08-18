@@ -206,12 +206,6 @@ void Game::cleanup()
     cleanupEntities();
 };
 
-void Game::reset()
-{
-    cleanup();
-    m_phase = GameReady;
-};
-
 void Game::checkGameOver()
 {
     if (m_phase == GameRunning) {
