@@ -27,6 +27,8 @@ class Server
         std::unique_ptr<sf::TcpListener> m_listener;
         unsigned short m_port;
 
+        bool m_running;
+
         std::unique_ptr<std::thread> m_clientThread;
         std::unique_ptr<std::thread> m_runnerThread;
         std::unique_ptr<std::thread> m_listenerThread;

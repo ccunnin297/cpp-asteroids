@@ -13,6 +13,7 @@ Server::Server(unsigned short port)
 
 Server::~Server()
 {
+    m_running = false;
     m_listener->close();
     for (auto& player : m_players) {
         player->getSocket()->disconnect();
@@ -30,6 +31,8 @@ void Server::start()
     }
     std::cout << "server started" << std::endl;
 
+    m_running = true;
+
     m_clientThread = std::make_unique<std::thread>([=] { waitForClients(); });
     m_clientThread->detach();
     m_runnerThread = std::make_unique<std::thread>([=] { run(); });
@@ -40,7 +43,7 @@ void Server::start()
 
 void Server::waitForClients()
 {
-    while(true) {
+    while(m_running) {
         // accept a new connection
         auto socket = std::make_unique<sf::TcpSocket>();
         if (m_listener->accept(*socket) != sf::Socket::Done)
@@ -57,7 +60,7 @@ void Server::waitForClients()
 void Server::run()
 {
     sf::Clock clock;
-    while(true) {
+    while(m_running) {
         sf::Time elapsed = clock.getElapsedTime();
         
         if (elapsed.asMilliseconds() >= 33) { //30 ticks per second
@@ -93,7 +96,7 @@ void Server::listen()
     InputState inputState;
     std::string strData;
     sf::Packet packet;
-    while (true) {
+    while (m_running) {
         if (m_socketSelector->wait(sf::milliseconds(30))) {
             for (auto &player : m_players) {
                 sf::TcpSocket* socket = player->getSocket();

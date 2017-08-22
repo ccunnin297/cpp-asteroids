@@ -9,10 +9,13 @@ Client::Client()
     m_socket = std::make_unique<sf::TcpSocket>();
     m_game = std::make_unique<ClientGame>(this);
     m_inputs = std::make_unique<Inputs>();
+
+    m_running = true;
 };
 
 Client::~Client()
 {
+    m_running = false;
     m_socket->disconnect();
 };
 
@@ -34,7 +37,7 @@ void Client::listen()
     sf::Packet packet;
     std::string strData;
     GameState gameState;
-    while (true) {
+    while (m_running) {
         if (m_socket->receive(packet) != sf::Socket::Done) {
             //error
         } else {

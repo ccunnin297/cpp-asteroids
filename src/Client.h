@@ -26,5 +26,7 @@ class Client
         std::unique_ptr<ClientGame> m_game;
         std::unique_ptr<Inputs> m_inputs;
 
+        bool m_running;
+
         std::unique_ptr<std::thread> m_listenerThread;
 };
