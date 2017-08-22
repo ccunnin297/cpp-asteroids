@@ -12,9 +12,10 @@ class Client
 {
     public:
         Client();
+        ~Client();
 
         void connectToServer(sf::IpAddress address, unsigned short port);
-        void run();
+        void run(sf::RenderWindow& window);
     private:
 
         void listen();

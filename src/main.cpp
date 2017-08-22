@@ -14,24 +14,27 @@ int main(int argc, char* argv[]) {
     //seed random number generator
     srand((unsigned)time(NULL));
 
+    //This has to be done first in order to connect sf::event loop to main thread
+    sf::RenderWindow window(sf::VideoMode(GAME_BOUNDS_X, GAME_BOUNDS_Y), "cpp-asteroids");
+
     sf::IpAddress ipAddress;
-    Server* server;
+
+    Server server(NETWORK_PORT);
     if (argc > 1 && argv[1]) {
         ipAddress = argv[1];
     } else {
         //Start the server
-        server = new Server(NETWORK_PORT);
-        server->start();
-
+        server.start();
         ipAddress = "127.0.0.1";
     }
 
     //Start and connect client
     Client client;
     client.connectToServer(ipAddress, NETWORK_PORT);
+    client.run(window);
 
     //Start client -- this will block thread until opened window is closed
-    client.run();
+    
 
     // Optional:  Delete all global objects allocated by libprotobuf.
     google::protobuf::ShutdownProtobufLibrary();

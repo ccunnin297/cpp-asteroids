@@ -2,6 +2,8 @@
 
 #include <memory>
 
+#include "utils.h"
+
 #include "Entity.h"
 #include "GameState.pb.h"
 #include "Ship.h"
@@ -21,5 +23,5 @@ class EntityFactory
         };
         std::unique_ptr<Entity> makeFromState(EntityState& entityState);
     private:
-        unsigned short m_autoIncrement;
+        ID m_autoIncrement;
 };

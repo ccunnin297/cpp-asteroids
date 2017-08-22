@@ -1,6 +1,11 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
+
 #include <cmath>
+#include <stdlib.h>
+
+typedef unsigned short ID;
 
 inline float randf(float min = 0.0f, float max = 1.0f)
 {

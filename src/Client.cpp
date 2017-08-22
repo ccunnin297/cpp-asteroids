@@ -11,6 +11,11 @@ Client::Client()
     m_inputs = std::make_unique<Inputs>();
 };
 
+Client::~Client()
+{
+    m_socket->disconnect();
+};
+
 //TCP
 void Client::connectToServer(sf::IpAddress address, unsigned short port)
 {
@@ -40,9 +45,8 @@ void Client::listen()
     }
 };
 
-void Client::run()
+void Client::run(sf::RenderWindow& window)
 {
-    sf::RenderWindow window(sf::VideoMode(GAME_BOUNDS_X, GAME_BOUNDS_Y), "cpp-asteroids");
     window.setKeyRepeatEnabled(false);
 
     sf::Clock clock;
@@ -90,6 +94,7 @@ void Client::updateServer()
         packet << strData;
         if (m_socket->send(packet) != sf::Socket::Done) {
             //Error
+            std::cout << "Error sending inputs to server" << std::endl;
         }
     }
 };

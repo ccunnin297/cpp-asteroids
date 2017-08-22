@@ -3,6 +3,7 @@
 #include "GameValues.h"
 #include "utils.h"
 
+#include <mutex>
 #include <iostream>
 
 Game::Game()
@@ -10,35 +11,28 @@ Game::Game()
     m_phase = GameReady;
 
     m_inputPressedFunctions = {
-        {
-            GameReady, {
-                {MenuAction, std::bind(&Game::start, this)}
-            },
-        },
-        {
-            GameRunning, {
-                {Forward, std::bind(&Game::moveForward, this)},
-                {Back, std::bind(&Game::moveBackward, this)},
-                {Left, std::bind(&Game::turnLeft, this)},
-                {Right, std::bind(&Game::turnRight, this)},
-                {Shoot, std::bind(&Game::shoot, this)},
-            },
-        },
-        {
-            GameOver, {
-                {MenuAction, std::bind(&Game::start, this)}
-            }
-        }
+        { GameReady, {
+            {MenuAction, &Game::start}
+        }},
+        { GameRunning, {
+            {Forward, &Game::moveForward},
+            {Back, &Game::moveBackward},
+            {Left, &Game::turnLeft},
+            {Right, &Game::turnRight},
+            {Shoot, &Game::shoot}
+        }},
+        { GameOver, {
+            {MenuAction, &Game::start}
+        }}
     };
+
     m_inputReleasedFunctions = {
-        {
-            GameRunning, {
-                {Forward, std::bind(&Game::stopMovingForward, this)},
-                {Back, std::bind(&Game::stopMovingBackward, this)},
-                {Left, std::bind(&Game::stopTurningLeft, this)},
-                {Right, std::bind(&Game::stopTurningRight, this)}
-            }
-        }
+        { GameRunning, {
+            {Forward, &Game::stopMovingForward},
+            {Back, &Game::stopMovingBackward},
+            {Left, &Game::stopTurningLeft},
+            {Right, &Game::stopTurningRight}
+        }}
     };
     m_entityFactory = std::make_unique<EntityFactory>();
 };
@@ -62,81 +56,83 @@ void Game::addAsteroids()
 };
 
 //TODO: combine entityFactory make and emplace_back with a lambda for simple constructor function
-void Game::addShip()
+ID Game::addShip()
 {
     std::unique_ptr<Ship> ship = m_entityFactory->make<Ship>();
     ship->setPosition(sf::Vector2f(1000, 200));
-    m_shipId = ship->getId();
+    ID shipId = ship->getId();
     m_entities.emplace_back(std::move(ship));
+
+    return shipId;
 };
 
-void Game::moveForward()
+void Game::moveForward(Player* player)
 {
-    auto ship = (Ship*)getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(player->getShipId());
     if (ship) {
         ship->setMoveForward(true);
     }
 };
 
-void Game::stopMovingForward()
+void Game::stopMovingForward(Player* player)
 {
-    auto ship = (Ship*)getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(player->getShipId());
     if (ship) {
         ship->setMoveForward(false);
     }
 };
 
-void Game::moveBackward()
+void Game::moveBackward(Player* player)
 {
-    auto ship = (Ship*)getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(player->getShipId());
     if (ship) {
         ship->setMoveBackward(true);
     }
 };
 
-void Game::stopMovingBackward()
+void Game::stopMovingBackward(Player* player)
 {
-    auto ship = (Ship*)getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(player->getShipId());
     if (ship) {
         ship->setMoveBackward(false);
     }
 };
 
-void Game::turnLeft()
+void Game::turnLeft(Player* player)
 {
-    Ship* ship = (Ship*)getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(player->getShipId());
     if (ship) {
         ship->setTurnLeft(true);
     }
 };
 
-void Game::stopTurningLeft()
+void Game::stopTurningLeft(Player* player)
 {
-    auto ship = (Ship*)getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(player->getShipId());
     if (ship) {
         ship->setTurnLeft(false);
     }
 };
 
-void Game::turnRight()
+void Game::turnRight(Player* player)
 {
-    auto ship = (Ship*)getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(player->getShipId());
     if (ship) {
         ship->setTurnRight(true);
     }
 };
 
-void Game::stopTurningRight()
+void Game::stopTurningRight(Player* player)
 {
-    auto ship = (Ship*)getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(player->getShipId());
     if (ship) {
         ship->setTurnRight(false);
     }
 };
 
-void Game::shoot()
+void Game::shoot(Player* player)
 {
-    auto ship = (Ship*)getEntity(m_shipId);
+    auto ship = (Ship*)getEntity(player->getShipId());
     if (ship) {
         auto bullet = m_entityFactory->make<Bullet>();
         ship->shoot(bullet.get());
@@ -144,11 +140,10 @@ void Game::shoot()
     }
 };
 
-void Game::start()
+void Game::start(Player* player)
 {
     clearEntities();
-
-    addShip();
+    addPlayerShips();
     addAsteroids();
     m_phase = GameRunning;
 };
@@ -160,7 +155,15 @@ void Game::clearEntities()
     }
 };
 
-Entity* Game::getEntity(unsigned short id)
+void Game::addPlayerShips()
+{
+    for (auto& player : m_players) {
+        ID shipId = addShip();
+        player->setShipId(shipId);
+    }
+};
+
+Entity* Game::getEntity(ID id)
 {
     for (auto& it : m_entities) {
         if (it->getId() == id) {
@@ -171,13 +174,13 @@ Entity* Game::getEntity(unsigned short id)
     return NULL;
 };
 
-void Game::enactInputs(std::unique_ptr<Inputs> inputs)
+void Game::enactInputs(Player* player)
 {
     if(m_inputPressedFunctions.count(m_phase) != 0) {
         auto pressedFuncs = m_inputPressedFunctions.at(m_phase);
         for (auto const& it : pressedFuncs) {
-            if (inputs->isKeyPressed(it.first)) {
-                it.second();
+            if (player->getInputs()->isKeyPressed(it.first)) {
+                (this->*(it.second))(player);
             }
         }
     }
@@ -185,17 +188,29 @@ void Game::enactInputs(std::unique_ptr<Inputs> inputs)
     if(m_inputReleasedFunctions.count(m_phase) != 0) {
         auto releasedFuncs = m_inputReleasedFunctions.at(m_phase);
         for (auto const& it : releasedFuncs) {
-            if (inputs->isKeyReleased(it.first)) {
-                it.second();
+            if (player->getInputs()->isKeyReleased(it.first)) {
+                (this->*(it.second))(player);
             }
         }
     }
 }
 
+void Game::addPlayer(std::shared_ptr<Player> player)
+{
+    m_players.emplace_back(player);
+};
+
 void Game::run()
 {
-    for (auto& it : m_entities) {
-        it->update();
+    for (auto& player : m_players) {
+        //TODO: tidy this up
+        if (player->newInputs()) {
+            player->setNewInputs(false);
+            enactInputs(player.get());
+        }
+    }
+    for (auto& entity : m_entities) {
+        entity->update();
     }
     checkCollisions();
 };
@@ -209,10 +224,16 @@ void Game::cleanup()
 void Game::checkGameOver()
 {
     if (m_phase == GameRunning) {
-        auto ship = (Ship*)getEntity(m_shipId);
-        if (!ship) {
-            m_phase = GameOver;
+        int shipCount = m_players.size();
+        for (auto& player : m_players) {
+            auto ship = getEntity(player->getShipId());
+            if (!ship) {
+                shipCount--;
+            }
         }
+        if (shipCount == 0) {
+            m_phase = GameOver;
+        }   
     }
 };
 
@@ -227,7 +248,7 @@ void Game::setState(GameState& gameState)
 {
     auto entityStates = gameState.entities();
     for (auto& entStateIt : entityStates) {
-        unsigned short id = entStateIt.id();
+        ID id = entStateIt.id();
 
         //Find entity with matching id
         auto entIt = std::find_if(

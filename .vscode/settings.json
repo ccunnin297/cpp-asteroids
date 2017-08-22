@@ -41,6 +41,10 @@
         "cmath": "cpp",
         "complex": "cpp",
         "valarray": "cpp",
-        "strstream": "cpp"
+        "strstream": "cpp",
+        "future": "cpp",
+        "__mutex_base": "cpp",
+        "condition_variable": "cpp",
+        "chrono": "cpp"
     }
 }

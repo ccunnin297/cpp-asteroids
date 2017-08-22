@@ -5,20 +5,25 @@
 #include <thread>
 
 #include "Game.h"
+#include "Player.h"
 
 class Server
 {
     public:
         Server(unsigned short port);
+        ~Server();
+        
         void start();
     private:
         void waitForClients();
         void run();
         void updateClient();
         void listen();
+        void addPlayer(std::unique_ptr<sf::TcpSocket> socket);
         
         std::unique_ptr<Game> m_game;
-        std::unique_ptr<sf::TcpSocket> m_socket;
+        std::unique_ptr<sf::SocketSelector> m_socketSelector;
+        std::vector<std::shared_ptr<Player>> m_players;
         std::unique_ptr<sf::TcpListener> m_listener;
         unsigned short m_port;
 

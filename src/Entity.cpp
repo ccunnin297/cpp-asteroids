@@ -102,12 +102,12 @@ void Entity::draw(sf::RenderWindow& window)
     window.draw(m_sprite);
 };
 
-unsigned short Entity::getId()
+ID Entity::getId()
 {
     return m_id;
 };
 
-void Entity::setId(unsigned short newId)
+void Entity::setId(ID newId)
 {
     m_id = newId;
 };

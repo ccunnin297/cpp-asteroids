@@ -6,7 +6,17 @@ Server::Server(unsigned short port)
 {
     m_port = port;
     m_listener = std::make_unique<sf::TcpListener>();
+    m_socketSelector = std::make_unique<sf::SocketSelector>();
+    m_socketSelector->add(*m_listener);
     m_game = std::make_unique<Game>();
+};
+
+Server::~Server()
+{
+    m_listener->close();
+    for (auto& player : m_players) {
+        player->getSocket()->disconnect();
+    }
 };
 
 void Server::start()
@@ -32,12 +42,13 @@ void Server::waitForClients()
 {
     while(true) {
         // accept a new connection
-        auto client = std::make_unique<sf::TcpSocket>();
-        if (m_listener->accept(*client) != sf::Socket::Done)
+        auto socket = std::make_unique<sf::TcpSocket>();
+        if (m_listener->accept(*socket) != sf::Socket::Done)
         {
             std::cout << "error connecting on server" << std::endl;
         } else {
-            m_socket = std::move(client);
+            m_socketSelector->add(*socket);
+            addPlayer(std::move(socket));
             std::cout << "server connected to client" << std::endl;
         }
     }
@@ -63,13 +74,14 @@ void Server::run()
 void Server::updateClient()
 {
     //check for client first
-    if (m_socket) {
+    for (auto& player : m_players) {
         auto gameState = m_game->getState();
         std::string strData;
         gameState.SerializeToString(&strData);
         sf::Packet packet;
         packet << strData;
-        if (m_socket->send(packet) != sf::Socket::Done) {
+        sf::TcpSocket* socket = player->getSocket();
+        if (socket->send(packet) != sf::Socket::Done) {
             //Error
         }
     }
@@ -82,15 +94,29 @@ void Server::listen()
     std::string strData;
     sf::Packet packet;
     while (true) {
-        if (m_socket) {
-            if (m_socket->receive(packet) != sf::Socket::Done) {
-                //error
-            } else {
-                packet >> strData;
-                inputState.ParseFromString(strData);
-                auto inputs = std::make_unique<Inputs>(inputState);
-                m_game->enactInputs(std::move(inputs)); 
+        if (m_socketSelector->wait(sf::milliseconds(30))) {
+            for (auto &player : m_players) {
+                sf::TcpSocket* socket = player->getSocket();
+                if (m_socketSelector->isReady(*socket)) {
+                    if (socket->receive(packet) != sf::Socket::Done) {
+                        //error
+                        std::cout << "Error receiving packet on server" << std::endl;
+                    } else {
+                        packet >> strData;
+                        inputState.ParseFromString(strData);
+                        player->setInputState(inputState);
+                        player->setNewInputs(true);
+                    }
+                }
             }
         }
     }
+};
+
+void Server::addPlayer(std::unique_ptr<sf::TcpSocket> socket)
+{
+    auto player = std::make_shared<Player>();
+    player->setSocket(std::move(socket));
+    m_game->addPlayer(player);
+    m_players.emplace_back(player);
 };

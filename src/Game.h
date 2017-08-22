@@ -6,6 +6,7 @@
 #include "GameState.pb.h"
 #include "Inputs.h"
 #include "EntityFactory.h"
+#include "Player.h"
 
 #include <memory>
 
@@ -26,36 +27,40 @@ class Game
 
         void setState(GameState& gameState);
         GameState getState();
-        void enactInputs(std::unique_ptr<Inputs> inputs);
+        void enactInputs(Player* player);
+        void addPlayer(std::shared_ptr<Player> player);
     private:
-        void moveForward();
-        void moveBackward();
-        void stopMovingForward();
-        void stopMovingBackward();
-        void turnLeft();
-        void stopTurningLeft();
-        void turnRight();
-        void stopTurningRight();
-        void shoot();
-        void start();
+        void moveForward(Player* player);
+        void moveBackward(Player* player);
+        void stopMovingForward(Player* player);
+        void stopMovingBackward(Player* player);
+        void turnLeft(Player* player);
+        void stopTurningLeft(Player* player);
+        void turnRight(Player* player);
+        void stopTurningRight(Player* player);
+        void shoot(Player* player);
+        void start(Player* player);
 
         void clearEntities();
-        void addShip();
+        ID addShip();
+        void addPlayerShips();
         void addAsteroids();
 
-        Entity* getEntity(unsigned short id);
+        Entity* getEntity(ID id);
         std::vector<std::unique_ptr<Entity>>::iterator findEntityToDestroy();
 
         void checkCollisions();
         void cleanupEntities();
         void checkGameOver();
 
-        unsigned short m_shipId;
         GamePhase m_phase;
 
         std::unique_ptr<EntityFactory> m_entityFactory;
         std::vector<std::unique_ptr<Entity>> m_entities;
+        std::vector<std::shared_ptr<Player>> m_players;
 
-        std::map<GamePhase, std::map<InputKey, std::function<void()>>> m_inputPressedFunctions;
-        std::map<GamePhase, std::map<InputKey, std::function<void()>>> m_inputReleasedFunctions;
+        typedef void (Game::*ShipFunction)(Player*);
+        
+        std::map<GamePhase, std::map<InputKey, ShipFunction>> m_inputPressedFunctions;
+        std::map<GamePhase, std::map<InputKey, ShipFunction>> m_inputReleasedFunctions;
 };

@@ -3,6 +3,8 @@
 #include <SFML/Graphics.hpp>
 #include "GameState.pb.h"
 
+#include "utils.h"
+
 class Entity
 {
     public:
@@ -23,8 +25,8 @@ class Entity
         bool shouldDestroy();
         void destroy();
 
-        unsigned short getId();
-        void setId(unsigned short newId);
+        ID getId();
+        void setId(ID newId);
         sf::Vector2f getPosition();
         void setPosition(sf::Vector2f newPosition);
         float getRotation();
@@ -41,7 +43,7 @@ class Entity
         sf::Sprite m_sprite;
         sf::Texture m_texture;
 
-        unsigned short m_id;
+        ID m_id;
         sf::Vector2f m_position;
         sf::Vector2f m_size;
         float m_velocity;
