@@ -41,7 +41,6 @@ class Entity
         virtual std::string getTextureString() { return "entity.png"; };
 
         sf::Sprite m_sprite;
-        sf::Texture m_texture;
 
         ID m_id;
         sf::Vector2f m_position;

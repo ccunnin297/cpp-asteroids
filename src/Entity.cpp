@@ -4,6 +4,7 @@
 #include "utils.h"
 
 #include "Logger.h"
+#include "ResourceManager.h"
 
 Entity::Entity()
 {
@@ -15,12 +16,8 @@ Entity::Entity()
 
 void Entity::init() {
     m_size = getBaseSize();
-    //TODO: make this a bit smarter
+    //TODO: make this collision a bit smarter
     m_collisionRadius = m_size.x/2.0f;
-    std::string filename = "assets/" + getTextureString();
-    if (!m_texture.loadFromFile(filename)) {
-        Logger::log("Missing asset: " + filename);
-    }
 };
 
 EntityState Entity::getState()
@@ -81,12 +78,12 @@ void Entity::update()
 
 void Entity::draw(sf::RenderWindow& window)
 {
-    //TODO: use textureManager
-    m_sprite.setTexture(m_texture);
+    sf::Texture texture = ResourceManager::getTexture(getTextureString());
+    m_sprite.setTexture(texture);
 
     //ensure sprite is m_size, so scale up/down from texture size
-    float xScale = m_size.x / m_texture.getSize().x;
-    float yScale = m_size.y / m_texture.getSize().y;
+    float xScale = m_size.x / texture.getSize().x;
+    float yScale = m_size.y / texture.getSize().y;
     m_sprite.setScale(xScale, yScale);
 
     //center sprite on middle

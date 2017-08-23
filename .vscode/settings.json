@@ -46,6 +46,11 @@
         "__mutex_base": "cpp",
         "condition_variable": "cpp",
         "chrono": "cpp",
-        "__hash_table": "cpp"
+        "__hash_table": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "unordered_map": "cpp",
+        "unordered_set": "cpp",
+        "rope": "cpp"
     }
 }
