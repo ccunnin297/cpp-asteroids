@@ -20,6 +20,7 @@ class Server
         void updateClient();
         void listen();
         void addPlayer(std::unique_ptr<sf::TcpSocket> socket);
+        void removePlayer(std::shared_ptr<Player> player);
         
         std::unique_ptr<Game> m_game;
         std::unique_ptr<sf::SocketSelector> m_socketSelector;

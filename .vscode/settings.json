@@ -45,6 +45,7 @@
         "future": "cpp",
         "__mutex_base": "cpp",
         "condition_variable": "cpp",
-        "chrono": "cpp"
+        "chrono": "cpp",
+        "__hash_table": "cpp"
     }
 }

@@ -29,6 +29,7 @@ class Game
         GameState getState();
         void enactInputs(Player* player);
         void addPlayer(std::shared_ptr<Player> player);
+        void removePlayer(std::shared_ptr<Player> player);
     private:
         void moveForward(Player* player);
         void moveBackward(Player* player);

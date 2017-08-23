@@ -309,3 +309,12 @@ std::vector<std::unique_ptr<Entity>>::iterator Game::findEntityToDestroy()
             return entity->shouldDestroy();
         });
 };
+
+void Game::removePlayer(std::shared_ptr<Player> player)
+{
+    auto ship = getEntity(player->getShipId());
+    if (ship) {
+        ship->destroy();
+    }
+    m_players.erase(std::remove(m_players.begin(), m_players.end(), player));
+};

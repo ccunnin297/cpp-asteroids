@@ -84,8 +84,19 @@ void Server::updateClient()
         sf::Packet packet;
         packet << strData;
         sf::TcpSocket* socket = player->getSocket();
-        if (socket->send(packet) != sf::Socket::Done) {
-            //Error
+        auto status = socket->send(packet);
+        switch (status) {
+            case sf::Socket::Disconnected:
+                std::cout << "Client disconnected" << std::endl;
+                removePlayer(player);
+                break;
+            case sf::Socket::Done:
+                //success
+                break;
+            default:
+                //Error
+                std::cout << "Error sending packet to client" << std::endl;
+                break;
         }
     }
 };
@@ -101,14 +112,22 @@ void Server::listen()
             for (auto &player : m_players) {
                 sf::TcpSocket* socket = player->getSocket();
                 if (m_socketSelector->isReady(*socket)) {
-                    if (socket->receive(packet) != sf::Socket::Done) {
-                        //error
-                        std::cout << "Error receiving packet on server" << std::endl;
-                    } else {
-                        packet >> strData;
-                        inputState.ParseFromString(strData);
-                        player->setInputState(inputState);
-                        player->setNewInputs(true);
+                    auto status = socket->receive(packet);
+                    switch (status) {
+                        case sf::Socket::Disconnected:
+                            std::cout << "Client disconnected" << std::endl;
+                            removePlayer(player);
+                            break;
+                        case sf::Socket::Done:
+                            packet >> strData;
+                            inputState.ParseFromString(strData);
+                            player->setInputState(inputState);
+                            player->setNewInputs(true);
+                            break;
+                        default:
+                            //Error
+                            std::cout << "Error receiving packet on server" << std::endl;
+                            break;
                     }
                 }
             }
@@ -123,3 +142,10 @@ void Server::addPlayer(std::unique_ptr<sf::TcpSocket> socket)
     m_game->addPlayer(player);
     m_players.emplace_back(player);
 };
+
+void Server::removePlayer(std::shared_ptr<Player> player)
+{
+    m_socketSelector->remove(*player->getSocket());
+    m_game->removePlayer(player);
+    m_players.erase(std::remove(m_players.begin(), m_players.end(), player));
+}
