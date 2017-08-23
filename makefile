@@ -7,6 +7,11 @@ OBJ_PATH = ./build/obj
 OBJ_FILES = $(addprefix $(OBJ_PATH)/,$(notdir $(CPP_FILES:.cpp=.o)))
 GEN_PATH = ./build/gen
 
+TEST_NAME = test.exe
+TEST_PATH = ./tests
+TEST_CPP_FILES = $(wildcard $(TEST_PATH)/*.cpp)
+TEST_OBJ_FILES = $(addprefix $(OBJ_PATH)/,$(notdir $(TEST_CPP_FILES:.cpp=.test.o)))
+
 DEPS = $(CPP_FILES:.cpp=.d)
 
 # g++
@@ -30,8 +35,13 @@ PROTO_CC_PATH = $(addprefix $(GEN_PATH)/,$(notdir $(PROTOS:.proto=.pb.h)))
 PROTO_GENS = $(PROTO_H_PATH) $(PROTO_CC_PATH)
 PROTO_OBJS = $(addprefix $(OBJ_PATH)/,$(notdir $(PROTOS:.proto=.pb.o)))
 
-CFLAGS = -Wall -c $(DEBUG) $(GENERIC_INCLUDE) $(SFML_INCLUDE) $(PROTO_INCLUDE) -std=c++14
+CATCH_PATH = $(INCLUDE_PATH)/catch
+CATCH_INCLUDE = -I$(CATCH_PATH)
+
+CFLAGS = -Wall -c $(DEBUG) $(GENERIC_INCLUDE) $(SFML_INCLUDE) $(PROTO_INCLUDE) $(CATCH_INCLUDE) -std=c++14
 LFLAGS = -Wall $(DEBUG) $(SFML_LIBS) $(PROTO_LIBS)
+
+TEST_LFLAGS = $(LFLAGS) $(TEST_LIBS)
 
 # Don't delete intermediate protobuf generated classes
 .PRECIOUS: $(PROTO_GENS)
@@ -45,6 +55,9 @@ $(OBJ_PATH)/%.pb.o: $(GEN_PATH)/%.pb.cc
 	mkdir -p $(OBJ_PATH)
 	$(CC) $(CFLAGS) -c -o $@ $<	
 
+$(OBJ_PATH)/%.test.o: $(TEST_PATH)/%.cpp $(PROTO_GENS) $(PROTO_OBJS)
+	$(CC) $(CFLAGS) -I$(GEN_PATH) -c -o $@ $<	
+
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp $(PROTO_GENS) $(PROTO_OBJS)
 	$(CC) $(CFLAGS) -I$(GEN_PATH) -c -o $@ $<
 
@@ -52,9 +65,13 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp $(PROTO_GENS) $(PROTO_OBJS)
 $(APP_NAME): $(OBJ_FILES)
 	$(CC) $(LFLAGS) -o $@ $(PROTO_OBJS) $^
 
-all: $(APP_NAME)
+$(TEST_NAME): $(filter-out $(OBJ_PATH)/main.o, $(OBJ_FILES)) $(TEST_OBJ_FILES)
+	$(CC) $(LFLAGS) -o $@ $(PROTO_OBJS) $^
+
+all: $(APP_NAME) $(TEST_NAME)
+test: $(TEST_NAME)
 clean:
-	rm -rf $(APP_NAME) $(OBJ_FILES) $(PROTO_OBJS) $(PROTO_GENS)
+	rm -rf $(APP_NAME) $(TEST_NAME) $(OBJ_FILES) $(PROTO_OBJS) $(PROTO_GENS)
 
 ifneq ($(MAKECMDGOALS),clean)
 -include $(DEPS)
