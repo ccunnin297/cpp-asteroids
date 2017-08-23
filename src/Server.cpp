@@ -1,5 +1,7 @@
 #include "Server.h"
 
+#include "GameValues.h"
+
 #include <iostream>
 
 Server::Server(unsigned short port)
@@ -46,13 +48,21 @@ void Server::waitForClients()
     while(m_running) {
         // accept a new connection
         auto socket = std::make_unique<sf::TcpSocket>();
-        if (m_listener->accept(*socket) != sf::Socket::Done)
-        {
-            std::cout << "error connecting on server" << std::endl;
-        } else {
-            m_socketSelector->add(*socket);
-            addPlayer(std::move(socket));
-            std::cout << "server connected to client" << std::endl;
+        auto status = m_listener->accept(*socket);
+        switch (status) {
+            case sf::Socket::Done:
+                if (m_players.size() < MAX_PLAYERS) {
+                    m_socketSelector->add(*socket);
+                    addPlayer(std::move(socket));
+                    std::cout << "server connected to client" << std::endl;
+                } else {
+                    //TODO: send message back to client indicating max number reached
+                    std::cout << "Reached max number of players, rejecting client connection" << std::endl;
+                }
+                break;
+            default:
+                std::cout << "error connecting on server" << std::endl;
+                break;
         }
     }
 };

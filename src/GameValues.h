@@ -16,3 +16,4 @@
 #define GAME_BOUNDS_Y 1000
 
 #define NETWORK_PORT 50001
+#define MAX_PLAYERS 4
