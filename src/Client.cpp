@@ -10,13 +10,12 @@ Client::Client()
     m_game = std::make_unique<ClientGame>(this);
     m_inputs = std::make_unique<Inputs>();
 
-    m_running = true;
+    m_listening = true;
 };
 
 Client::~Client()
 {
-    m_running = false;
-    m_socket->disconnect();
+    disconnectFromServer();
 };
 
 //TCP
@@ -37,13 +36,22 @@ void Client::listen()
     sf::Packet packet;
     std::string strData;
     GameState gameState;
-    while (m_running) {
-        if (m_socket->receive(packet) != sf::Socket::Done) {
-            //error
-        } else {
-            packet >> strData;
-            gameState.ParseFromString(strData);
-            m_game->setState(gameState);
+    while (m_listening) {
+        auto status = m_socket->receive(packet);
+        switch (status) {
+            case sf::Socket::Disconnected:
+                std::cout << "Server disconnected" << std::endl;
+                disconnectFromServer();
+                break;
+            case sf::Socket::Done:
+                packet >> strData;
+                gameState.ParseFromString(strData);
+                m_game->setState(gameState);
+                break;
+            default:
+                //Errors
+                std::cout << "Error receiving updates from server" << std::endl;
+                break;
         }
     }
 };
@@ -95,9 +103,25 @@ void Client::updateServer()
         inputState.SerializeToString(&strData);
         sf::Packet packet;
         packet << strData;
-        if (m_socket->send(packet) != sf::Socket::Done) {
-            //Error
-            std::cout << "Error sending inputs to server" << std::endl;
+        auto status = m_socket->send(packet);
+        switch (status) {
+            case sf::Socket::Disconnected:
+                std::cout << "Server disconnected" << std::endl;
+                disconnectFromServer();
+                break;
+            case sf::Socket::Done:
+                //Success
+                break;
+            default:
+                //Errors
+                std::cout << "Error sending inputs to server" << std::endl;
+                break;
         }
     }
+};
+
+void Client::disconnectFromServer()
+{
+    m_listening = false;
+    m_socket->disconnect();
 };

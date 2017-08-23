@@ -21,12 +21,13 @@ class Client
         void listen();
         void updateInputs(sf::Event event);
         void updateServer();
+        void disconnectFromServer();
 
         std::unique_ptr<sf::TcpSocket> m_socket;
         std::unique_ptr<ClientGame> m_game;
         std::unique_ptr<Inputs> m_inputs;
 
-        bool m_running;
+        bool m_listening;
 
         std::unique_ptr<std::thread> m_listenerThread;
 };
