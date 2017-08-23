@@ -2,7 +2,7 @@
 
 #include "GameValues.h"
 
-#include <iostream>
+#include "Logger.h"
 
 Server::Server(unsigned short port)
 {
@@ -28,10 +28,10 @@ void Server::start()
     if (m_listener->listen(m_port) != sf::Socket::Done)
     {
         // error... 
-        std::cout << "error listening to port" << std::endl;
+        Logger::log("error listening to port");
         return;
     }
-    std::cout << "server started" << std::endl;
+    Logger::log("server started");
 
     m_running = true;
 
@@ -54,14 +54,14 @@ void Server::waitForClients()
                 if (m_players.size() < MAX_PLAYERS) {
                     m_socketSelector->add(*socket);
                     addPlayer(std::move(socket));
-                    std::cout << "server connected to client" << std::endl;
+                    Logger::log("server connected to client");
                 } else {
                     //TODO: send message back to client indicating max number reached
-                    std::cout << "Reached max number of players, rejecting client connection" << std::endl;
+                    Logger::log("Reached max number of players, rejecting client connection");
                 }
                 break;
             default:
-                std::cout << "error connecting on server" << std::endl;
+                Logger::log("error connecting on server");
                 break;
         }
     }
@@ -97,7 +97,7 @@ void Server::updateClient()
         auto status = socket->send(packet);
         switch (status) {
             case sf::Socket::Disconnected:
-                std::cout << "Client disconnected" << std::endl;
+                Logger::log("Client disconnected");
                 removePlayer(player);
                 break;
             case sf::Socket::Done:
@@ -105,7 +105,7 @@ void Server::updateClient()
                 break;
             default:
                 //Error
-                std::cout << "Error sending packet to client" << std::endl;
+                Logger::log("Error sending packet to client");
                 break;
         }
     }
@@ -125,7 +125,7 @@ void Server::listen()
                     auto status = socket->receive(packet);
                     switch (status) {
                         case sf::Socket::Disconnected:
-                            std::cout << "Client disconnected" << std::endl;
+                            Logger::log("Client disconnected");
                             removePlayer(player);
                             break;
                         case sf::Socket::Done:
@@ -136,7 +136,7 @@ void Server::listen()
                             break;
                         default:
                             //Error
-                            std::cout << "Error receiving packet on server" << std::endl;
+                            Logger::log("Error receiving packet on server");
                             break;
                     }
                 }

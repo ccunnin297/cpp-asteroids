@@ -2,7 +2,7 @@
 
 #include "GameValues.h"
 
-#include <iostream>
+#include "Logger.h"
 
 Client::Client()
 {
@@ -23,9 +23,9 @@ void Client::connectToServer(sf::IpAddress address, unsigned short port)
 {
     sf::Socket::Status status = m_socket->connect(address, port);
     if (status != sf::Socket::Done) {
-        std::cout << "error connecting on client" << std::endl;
+        Logger::log("error connecting on client");
     } else {
-        std::cout << "client connected to server" << std::endl;
+        Logger::log("client connected to server");
         m_listenerThread = std::make_unique<std::thread>([=] { listen(); });
         m_listenerThread->detach();
     }
@@ -40,7 +40,7 @@ void Client::listen()
         auto status = m_socket->receive(packet);
         switch (status) {
             case sf::Socket::Disconnected:
-                std::cout << "Server disconnected" << std::endl;
+                Logger::log("Server disconnected");
                 disconnectFromServer();
                 break;
             case sf::Socket::Done:
@@ -50,7 +50,7 @@ void Client::listen()
                 break;
             default:
                 //Errors
-                std::cout << "Error receiving updates from server" << std::endl;
+                Logger::log("error receiving updates from server");
                 break;
         }
     }
@@ -106,7 +106,7 @@ void Client::updateServer()
         auto status = m_socket->send(packet);
         switch (status) {
             case sf::Socket::Disconnected:
-                std::cout << "Server disconnected" << std::endl;
+                Logger::log("Server disconnected");
                 disconnectFromServer();
                 break;
             case sf::Socket::Done:
@@ -114,7 +114,7 @@ void Client::updateServer()
                 break;
             default:
                 //Errors
-                std::cout << "Error sending inputs to server" << std::endl;
+                Logger::log("Error sending inputs to server");
                 break;
         }
     }

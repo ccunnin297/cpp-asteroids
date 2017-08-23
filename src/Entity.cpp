@@ -3,7 +3,7 @@
 #include "GameValues.h"
 #include "utils.h"
 
-#include <iostream>
+#include "Logger.h"
 
 Entity::Entity()
 {
@@ -19,7 +19,7 @@ void Entity::init() {
     m_collisionRadius = m_size.x/2.0f;
     std::string filename = "assets/" + getTextureString();
     if (!m_texture.loadFromFile(filename)) {
-        std::cout << "Missing asset:" << filename << std::endl;
+        Logger::log("Missing asset: " + filename);
     }
 };
 

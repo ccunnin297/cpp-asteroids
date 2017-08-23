@@ -3,8 +3,7 @@
 #include "GameValues.h"
 #include "utils.h"
 
-#include <mutex>
-#include <iostream>
+#include "Logger.h"
 
 Game::Game()
 {
@@ -170,7 +169,7 @@ Entity* Game::getEntity(ID id)
             return it.get();
         }
     }
-    std::cout << "Entity " << id << " not found" << std::endl;
+    Logger::log("Entity " + std::to_string(id) + " not found");
     return NULL;
 };
 

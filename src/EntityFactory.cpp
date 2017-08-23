@@ -1,7 +1,5 @@
 #include "EntityFactory.h"
 
-#include <iostream>
-
 EntityFactory::EntityFactory()
 {
     m_autoIncrement = 0;
