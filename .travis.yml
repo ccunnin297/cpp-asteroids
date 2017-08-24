@@ -1,3 +1,7 @@
 language: cpp
-install: make
-script: make
+os: osx
+compiler:
+  - gcc
+  - clang
+script:
+  - make all
