@@ -14,7 +14,8 @@
                 "${workspaceRoot}/build/gen",
                 "${workspaceRoot}/include",
                 "${workspaceRoot}/include/SFML-2.4.2-osx-clang/include",
-                "${workspaceRoot}/include/protoc-3.3.0-osx-x86_64/include"
+                "${workspaceRoot}/include/protoc-3.3.0-osx-x86_64/include",
+                "${workspaceRoot}/include/catch"
             ],
             "defines": ["SFML"],
             "intelliSenseMode": "clang-x64",
@@ -31,7 +32,8 @@
                     "${workspaceRoot}/build/gen",
                     "${workspaceRoot}/include",
                     "${workspaceRoot}/include/SFML-2.4.2-osx-clang/include",
-                    "${workspaceRoot}/include/protoc-3.3.0-osx-x86_64/include"
+                    "${workspaceRoot}/include/protoc-3.3.0-osx-x86_64/include",
+                    "${workspaceRoot}/include/catch"
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
