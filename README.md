@@ -1,4 +1,6 @@
-# cpp-asteroids
+[![Build Status](https://travis-ci.org/philsquared/Catch.svg?branch=master)](https://travis-ci.org/philsquared/Catch)
+
+# cpp-asteroids 
 
 ## Dependencies
 Uses SFML 2.4.2: https://www.sfml-dev.org/download/sfml/2.4.2/
