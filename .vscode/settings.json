@@ -51,6 +51,7 @@
         "hash_set": "cpp",
         "unordered_map": "cpp",
         "unordered_set": "cpp",
-        "rope": "cpp"
+        "rope": "cpp",
+        "type_traits": "cpp"
     }
 }

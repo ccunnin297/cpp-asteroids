@@ -56,7 +56,7 @@ $(OBJ_PATH)/%.pb.o: $(GEN_PATH)/%.pb.cc
 	$(CC) $(CFLAGS) -c -o $@ $<	
 
 $(OBJ_PATH)/%.test.o: $(TEST_PATH)/%.cpp $(PROTO_GENS) $(PROTO_OBJS)
-	$(CC) $(CFLAGS) -I$(GEN_PATH) -c -o $@ $<	
+	$(CC) $(CFLAGS) -I$(GEN_PATH) -I$(SRC_PATH) -c -o $@ $<	
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp $(PROTO_GENS) $(PROTO_OBJS)
 	$(CC) $(CFLAGS) -I$(GEN_PATH) -c -o $@ $<
