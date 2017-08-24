@@ -1,4 +1,6 @@
-# cpp-asteroids
+[![Build Status](https://travis-ci.org/ccunnin297/cpp-asteroids.svg?branch=master)](https://travis-ci.org/ccunnin297/cpp-asteroids)
+
+# cpp-asteroids 
 
 ## Dependencies
 Uses SFML 2.4.2: https://www.sfml-dev.org/download/sfml/2.4.2/
