@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/philsquared/Catch.svg?branch=master)](https://travis-ci.org/philsquared/Catch)
+[![Build Status](https://travis-ci.org/ccunnin297/cpp-asteroids.svg?branch=master)](https://travis-ci.org/ccunnin297/cpp-asteroids)
 
 # cpp-asteroids 
 
