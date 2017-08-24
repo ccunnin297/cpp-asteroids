@@ -1,8 +1,7 @@
 language: cpp
 os: osx
 compiler:
-  - gcc
-  - clang
+  - g++
 script:
   - make all
   - ./test-ci
