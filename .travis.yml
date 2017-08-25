@@ -2,6 +2,9 @@ language: cpp
 os: osx
 compiler:
   - clang
+before install:
+  - sudo brew update
+  - sudo brew install protobuf
 script:
   - make all
   - ./test-ci
