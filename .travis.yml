@@ -1,10 +1,26 @@
+# language: cpp
+# sudo: required
+# os: osx
+# compiler:
+#   - g++
+# before install:
+#   - sudo brew update
+#   - sudo brew install protobuf
+# script:
+#   - make all
+#   - ./test-ci
 language: cpp
-os: osx
+sudo: required
+dist: trusty
 compiler:
-  - clang
-before install:
-  - sudo brew update
-  - sudo brew install protobuf
+- gcc
+os:
+- linux
+before_install:
+- date
+- locale
+- echo $PATH
+- sudo apt-get install libprotobuf-dev protobuf-compiler libc-ares2 libleveldb-dev -y
 script:
   - make all
   - ./test-ci
