@@ -1,6 +1,10 @@
 [![Build Status](https://travis-ci.org/ccunnin297/cpp-asteroids.svg?branch=master)](https://travis-ci.org/ccunnin297/cpp-asteroids)
 
-# cpp-asteroids 
+# cpp-asteroids
+
+Project built for Mac / osx.
+
+To build for other platforms, replace SFML/protobuf libraries in makefile.
 
 ## Dependencies
 Uses SFML 2.4.2: https://www.sfml-dev.org/download/sfml/2.4.2/
