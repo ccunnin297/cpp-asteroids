@@ -10,6 +10,7 @@
 #include "Asteroid.h"
 #include "Bullet.h"
 
+//Entity Factory creates new entities and manages entity unique ID
 class EntityFactory
 {
     public:

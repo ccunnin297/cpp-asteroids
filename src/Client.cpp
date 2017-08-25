@@ -7,7 +7,7 @@
 Client::Client()
 {
     m_socket = std::make_unique<sf::TcpSocket>();
-    m_game = std::make_unique<ClientGame>(this);
+    m_game = std::make_unique<Game>();
     m_inputs = std::make_unique<Inputs>();
 
     m_listening = true;

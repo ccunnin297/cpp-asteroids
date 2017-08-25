@@ -5,6 +5,7 @@ EntityFactory::EntityFactory()
     m_autoIncrement = 0;
 };
 
+//Instantiates new entity based on specified type from state
 std::unique_ptr<Entity> EntityFactory::makeFromState(EntityState& entityState) {
     std::unique_ptr<Entity> e;
     switch (entityState.type()) {
