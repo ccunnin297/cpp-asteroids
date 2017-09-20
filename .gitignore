@@ -39,8 +39,8 @@ ipch/
 *.VC.VC.opendb
 
 # Visual Studio Debug
-./Debug
-./x64/Debug
+.Debug/
+.x64/Debug/
 
 # User-specific files
 *.suo
