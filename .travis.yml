@@ -1,7 +1,0 @@
-language: cpp
-os: osx
-compiler:
-  - g++
-script:
-  - make all
-  - ./test-ci
