@@ -65,7 +65,7 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp $(PROTO_GENS) $(PROTO_OBJS)
 $(APP_NAME): $(OBJ_FILES)
 	$(CC) $(LFLAGS) -o $@ $(PROTO_OBJS) $^
 
-$(TEST_NAME): $(filter-out $(OBJ_PATH)/main-test.o, $(OBJ_FILES)) $(TEST_OBJ_FILES)
+$(TEST_NAME): $(filter-out $(OBJ_PATH)/main.o, $(OBJ_FILES)) $(TEST_OBJ_FILES)
 	$(CC) $(LFLAGS) -o $@ $(PROTO_OBJS) $^
 
 all: $(APP_NAME) $(TEST_NAME)
