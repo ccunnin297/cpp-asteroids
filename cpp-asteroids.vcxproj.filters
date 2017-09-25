@@ -22,11 +22,14 @@
     <Filter Include="Resource Files\Assets">
       <UniqueIdentifier>{00069bf9-e9c9-450f-a0d3-c8ae26b762f4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\tests">
+      <UniqueIdentifier>{7e142f77-7348-4bbe-9f99-67f75d3aed73}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\proto">
+      <UniqueIdentifier>{83a01322-c6d6-4629-89ab-67a376dff784}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="include\sfml-2.4.2-osx-clang\examples\voip\Client.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\Asteroid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -66,20 +69,17 @@
     <ClCompile Include="src\Ship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\entity.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="tests\entity-test.cpp">
+      <Filter>Source Files\tests</Filter>
     </ClCompile>
-    <ClCompile Include="tests\main.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="tests\main-test.cpp">
+      <Filter>Source Files\tests</Filter>
     </ClCompile>
-    <ClCompile Include="tests\ship.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="tests\ship-test.cpp">
+      <Filter>Source Files\tests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\catch\catch.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\Asteroid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -119,6 +119,9 @@
     <ClInclude Include="src\utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\ResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\asteroid.png">
@@ -143,5 +146,13 @@
     <Text Include="assets\fonts\BebasNeue\License.txt">
       <Filter>Resource Files\Fonts\BebasNeue</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\GameState.proto">
+      <Filter>Source Files\proto</Filter>
+    </None>
+    <None Include="src\InputState.proto">
+      <Filter>Source Files\proto</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -73,10 +73,25 @@
     <NMakeReBuildCommandLine>make clean &amp; make</NMakeReBuildCommandLine>
     <NMakePreprocessorDefinitions>WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
   </PropertyGroup>
-  <ItemDefinitionGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)\src;$(SolutionDir)\build\gen</IncludePath>
+    <SourcePath>$(VC_SourcePath);$(SolutionDir)\src</SourcePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(SolutionDir)\include\catch;$(SolutionDir)\include\protoc-win-3.4.0-win32\include;$(SolutionDir)\include\SFML-2.4.2-win-vc14-64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(SolutionDir)\include\protoc-3.4.0-win32\bin;$(SolutionDir)\include\SFML-2.4.2-win-vc14-64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics.lib sfml-system.lib sfml-network.lib sfml-window.lib;protobuf;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PreBuildEvent>
+      <Command>if not exist "$(SolutionDir)\build\gen" mkdir $(SolutionDir)\build\gen;
+$(SolutionDir)\include\protoc-3.4.0-win32\bin\protoc.exe --proto_path=$(SolutionDir)src --cpp_out=$(SolutionDir)build\gen $(SolutionDir)src\*.proto</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="include\sfml-2.4.2-osx-clang\examples\voip\Client.cpp" />
     <ClCompile Include="src\Asteroid.cpp" />
     <ClCompile Include="src\Bullet.cpp" />
     <ClCompile Include="src\Client.cpp" />
@@ -90,12 +105,11 @@
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Server.cpp" />
     <ClCompile Include="src\Ship.cpp" />
-    <ClCompile Include="tests\entity.cpp" />
-    <ClCompile Include="tests\main.cpp" />
-    <ClCompile Include="tests\ship.cpp" />
+    <ClCompile Include="tests\entity-test.cpp" />
+    <ClCompile Include="tests\main-test.cpp" />
+    <ClCompile Include="tests\ship-test.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="include\catch\catch.hpp" />
     <ClInclude Include="src\Asteroid.h" />
     <ClInclude Include="src\Bullet.h" />
     <ClInclude Include="src\Client.h" />
@@ -106,6 +120,7 @@
     <ClInclude Include="src\Inputs.h" />
     <ClInclude Include="src\Logger.h" />
     <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\ResourceManager.h" />
     <ClInclude Include="src\Server.h" />
     <ClInclude Include="src\Ship.h" />
     <ClInclude Include="src\utils.h" />
@@ -121,6 +136,10 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="assets\fonts\BebasNeue\License.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="src\GameState.proto" />
+    <None Include="src\InputState.proto" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
