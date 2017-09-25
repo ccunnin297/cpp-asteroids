@@ -1,12 +1,12 @@
 # cpp-asteroids
 
-Project built for Mac / osx.
-
-To build for other platforms, replace SFML/protobuf libraries in makefile.
+Project built for Windows and Mac / osx.
 
 ## Dependencies
-Uses SFML 2.4.2: https://www.sfml-dev.org/download/sfml/2.4.2/
-Uses Google Protocol Buffers: https://developers.google.com/protocol-buffers/
+Requires SFML and protobuf to be installed:
+
+SFML 2.4.2: https://www.sfml-dev.org/download/sfml/2.4.2/
+Google Protocol Buffers: https://developers.google.com/protocol-buffers/
 
 ## Build
 To build application:
