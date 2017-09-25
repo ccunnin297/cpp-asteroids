@@ -44,6 +44,8 @@ ipch/
 # Visual Studio Debug
 Debug/
 x64/Debug/
+Release/
+x64/Release/
 
 # User-specific files
 *.suo
