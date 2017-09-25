@@ -75,23 +75,26 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SolutionDir)\src;$(SolutionDir)\build\gen</IncludePath>
-    <SourcePath>$(VC_SourcePath);$(SolutionDir)\src</SourcePath>
+    <SourcePath>$(VC_SourcePath);$(SolutionDir)\src;$(SolutionDir)\build\gen</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)\include\catch;$(SolutionDir)\include\protoc-win-3.4.0-win32\include;$(SolutionDir)\include\SFML-2.4.2-win-vc14-64\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\catch;$(SolutionDir)include\SFML-2.4.2-win-vc14-64\include;$(SolutionDir)include\protobuf-3.4.1\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\include\protoc-3.4.0-win32\bin;$(SolutionDir)\include\SFML-2.4.2-win-vc14-64\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sfml-graphics.lib sfml-system.lib sfml-network.lib sfml-window.lib;protobuf;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(SolutionDir)\include\SFML-2.4.2-win-vc14-64\lib;$(SolutionDir)\include\SFML-2.4.2-win-vc14-64\bin;$(SolutionDir)\include\protobuf-3.4.1\cmake\build\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sfml-graphics.lib;sfml-system.lib;sfml-network.lib;sfml-window.lib;libprotobufd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
       <Command>if not exist "$(SolutionDir)\build\gen" mkdir $(SolutionDir)\build\gen;
-$(SolutionDir)\include\protoc-3.4.0-win32\bin\protoc.exe --proto_path=$(SolutionDir)src --cpp_out=$(SolutionDir)build\gen $(SolutionDir)src\*.proto</Command>
+$(SolutionDir)\include\protoc-3.4.0-win32\bin\protoc.exe -I=$(SolutionDir)src --proto_path=$(SolutionDir)src --cpp_out=$(SolutionDir)build\gen $(SolutionDir)src\*.proto</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="build\gen\GameState.pb.cc" />
+    <ClCompile Include="build\gen\InputState.pb.cc" />
     <ClCompile Include="src\Asteroid.cpp" />
     <ClCompile Include="src\Bullet.cpp" />
     <ClCompile Include="src\Client.cpp" />
@@ -105,11 +108,10 @@ $(SolutionDir)\include\protoc-3.4.0-win32\bin\protoc.exe --proto_path=$(Solution
     <ClCompile Include="src\ResourceManager.cpp" />
     <ClCompile Include="src\Server.cpp" />
     <ClCompile Include="src\Ship.cpp" />
-    <ClCompile Include="tests\entity-test.cpp" />
-    <ClCompile Include="tests\main-test.cpp" />
-    <ClCompile Include="tests\ship-test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="build\gen\GameState.pb.h" />
+    <ClInclude Include="build\gen\InputState.pb.h" />
     <ClInclude Include="src\Asteroid.h" />
     <ClInclude Include="src\Bullet.h" />
     <ClInclude Include="src\Client.h" />
