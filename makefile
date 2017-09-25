@@ -25,7 +25,7 @@ SFML_PATH = $(INCLUDE_PATH)/SFML-2.4.2-osx-clang
 SFML_INCLUDE = -I$(SFML_PATH)/include
 SFML_LIBS = -L$(SFML_PATH)/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
 
-PROTO_PATH = $(INCLUDE_PATH)/protoc-3.3.0-osx-x86_64
+PROTO_PATH = $(INCLUDE_PATH)/protoc-3.4.0-osx-x86_64
 PROTO_BIN = $(PROTO_PATH)/bin
 PROTO_INCLUDE = -I$(PROTO_PATH)/include
 PROTO_LIBS = -L$(PROTO_PATH)/bin -lprotobuf

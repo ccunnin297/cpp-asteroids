@@ -1,4 +1,4 @@
-#import "ResourceManager.h"
+#include "ResourceManager.h"
 
 #include "Logger.h"
 
