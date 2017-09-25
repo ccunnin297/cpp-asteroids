@@ -79,17 +79,16 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>$(SolutionDir)include\catch;$(SolutionDir)include\SFML-2.4.2-win-vc14-64\include;$(SolutionDir)include\protobuf-3.4.1\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)include\catch;D:\SFML-2.4.2-win-vc14-64\include;D:\protobuf-3.4.1\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp14</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(SolutionDir)\include\SFML-2.4.2-win-vc14-64\lib;$(SolutionDir)\include\SFML-2.4.2-win-vc14-64\bin;$(SolutionDir)\include\protobuf-3.4.1\cmake\build\debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>D:\SFML-2.4.2-win-vc14-64\lib;D:\SFML-2.4.2-win-vc14-64\bin;D:\protobuf-3.4.1\cmake\build\release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>sfml-graphics.lib;sfml-system.lib;sfml-network.lib;sfml-window.lib;libprotobufd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PreBuildEvent>
-      <Command>if not exist "$(SolutionDir)\build\gen" mkdir $(SolutionDir)\build\gen;
-$(SolutionDir)\include\protoc-3.4.0-win32\bin\protoc.exe -I=$(SolutionDir)src --proto_path=$(SolutionDir)src --cpp_out=$(SolutionDir)build\gen $(SolutionDir)src\*.proto</Command>
+      <Command>if not exist "$(SolutionDir)\build\gen" mkdir $(SolutionDir)\build\gen;protoc -I=$(SolutionDir)src --proto_path=$(SolutionDir)src --cpp_out=$(SolutionDir)build\gen $(SolutionDir)src\*.proto</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
