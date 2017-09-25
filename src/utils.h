@@ -2,8 +2,9 @@
 
 #include <SFML/Graphics.hpp>
 
-#include <cmath>
 #include <stdlib.h>
+
+#define M_PI 3.14159265358979323846 //not included in visual C++
 
 typedef unsigned short ID;
 
