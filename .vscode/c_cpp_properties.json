@@ -18,7 +18,9 @@
                 "${workspaceRoot}/include/protoc-3.3.0-osx-x86_64/include",
                 "${workspaceRoot}/include/catch"
             ],
-            "defines": ["SFML"],
+            "defines": [
+                "SFML"
+            ],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [
@@ -39,7 +41,11 @@
                 ],
                 "limitSymbolsToIncludedHeaders": true,
                 "databaseFilename": ""
-            }
+            },
+            "macFrameworkPath": [
+                "/System/Library/Frameworks",
+                "/Library/Frameworks"
+            ]
         },
         {
             "name": "Linux",
@@ -84,5 +90,5 @@
             }
         }
     ],
-    "version": 2
+    "version": 3
 }
