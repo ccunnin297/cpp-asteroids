@@ -14,7 +14,7 @@ TEST_OBJ_FILES = $(addprefix $(OBJ_PATH)/,$(notdir $(TEST_CPP_FILES:.cpp=.test.o
 
 DEPS = $(CPP_FILES:.cpp=.d)
 
-# g++
+# C++ Compiler
 CC = g++
 DEBUG = -g
 
