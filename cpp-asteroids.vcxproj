@@ -140,6 +140,7 @@ xcopy /I $(SolutionDir)assets $(SolutionDir)publish\assets</Command>
     <ClInclude Include="src\Asteroid.h" />
     <ClInclude Include="src\Bullet.h" />
     <ClInclude Include="src\Client.h" />
+    <ClInclude Include="src\config.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\EntityFactory.h" />
     <ClInclude Include="src\Game.h" />
