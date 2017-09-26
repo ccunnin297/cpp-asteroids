@@ -18,8 +18,7 @@ This project is built in Visual Studio. In order to build, dependencies must be 
 - In C/C++, General: Replace SFML and protobuf include paths
 - In Linker, General: Replace SFML and protobuf lib paths
 - Make sure the protoc executable is in your path
-
-In config.h, change PC to 1 and Mac to 0.
+- In config.h, change PC to 1 and Mac to 0.
 
 ### Build
 Debug:
@@ -30,12 +29,10 @@ Release
 
 ### Run
 Run:
-
-Run executable in publish folder.
+- Run executable in publish folder.
 
 Connect to a running game server:
-
-Create a shortcut to the executable. In the shortcut properties, change the target to:
+- Create a shortcut to the executable. In the shortcut properties, change the target to:
 
 `"[path-to-executable]/cpp-asteroids.exe" [ip-address]`
 
@@ -51,7 +48,7 @@ In order to build, dependencies must be set up in the makefile.
 
 - Replace SFML_PATH and PROTO_PATH
 
-In config.h, change PC to 0 and Mac to 1.
+- In config.h, change PC to 0 and Mac to 1.
 
 ### Build
 To build application:
