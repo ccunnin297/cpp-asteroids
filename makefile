@@ -21,14 +21,14 @@ DEBUG = -g
 # Includes
 GENERIC_INCLUDE = -I$(INCLUDE_PATH)
 
-SFML_PATH = $(INCLUDE_PATH)/SFML-2.4.2-osx-clang
+SFML_PATH = /usr/local/Cellar/sfml/2.4.2_1
 SFML_INCLUDE = -I$(SFML_PATH)/include
 SFML_LIBS = -L$(SFML_PATH)/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
 
-PROTO_PATH = $(INCLUDE_PATH)/protoc-3.4.0-osx-x86_64
+PROTO_PATH = /usr/local/Cellar/protobuf/3.4.1
 PROTO_BIN = $(PROTO_PATH)/bin
 PROTO_INCLUDE = -I$(PROTO_PATH)/include
-PROTO_LIBS = -L$(PROTO_PATH)/bin -lprotobuf
+PROTO_LIBS = -L$(PROTO_PATH)/lib -lprotobuf
 PROTOS = $(wildcard $(SRC_PATH)/*.proto)
 PROTO_H_PATH = $(addprefix $(GEN_PATH)/,$(notdir $(PROTOS:.proto=.pb.cc)))
 PROTO_CC_PATH = $(addprefix $(GEN_PATH)/,$(notdir $(PROTOS:.proto=.pb.h)))

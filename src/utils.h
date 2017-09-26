@@ -4,10 +4,12 @@
 
 #include <stdlib.h>
 
-#ifndef M_PI
-#define M_PI 3.14159265358979323846 //not included in visual C++
-#else
+#include "config.h"
+
+#if (MAC)
 #include <cmath>
+#else
+#define M_PI 3.14159265358979323846 //not included in visual C++
 #endif
 
 typedef unsigned short ID;
