@@ -22,11 +22,11 @@
     <Filter Include="Resource Files\Assets">
       <UniqueIdentifier>{00069bf9-e9c9-450f-a0d3-c8ae26b762f4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\tests">
-      <UniqueIdentifier>{7e142f77-7348-4bbe-9f99-67f75d3aed73}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\proto">
       <UniqueIdentifier>{83a01322-c6d6-4629-89ab-67a376dff784}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gen">
+      <UniqueIdentifier>{b9f17f51-bbb8-462f-8987-c215cac5df42}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -69,14 +69,11 @@
     <ClCompile Include="src\Ship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="tests\entity-test.cpp">
-      <Filter>Source Files\tests</Filter>
+    <ClCompile Include="build\gen\GameState.pb.cc">
+      <Filter>Source Files\gen</Filter>
     </ClCompile>
-    <ClCompile Include="tests\main-test.cpp">
-      <Filter>Source Files\tests</Filter>
-    </ClCompile>
-    <ClCompile Include="tests\ship-test.cpp">
-      <Filter>Source Files\tests</Filter>
+    <ClCompile Include="build\gen\InputState.pb.cc">
+      <Filter>Source Files\gen</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -121,6 +118,12 @@
     </ClInclude>
     <ClInclude Include="src\ResourceManager.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="build\gen\GameState.pb.h">
+      <Filter>Source Files\gen</Filter>
+    </ClInclude>
+    <ClInclude Include="build\gen\InputState.pb.h">
+      <Filter>Source Files\gen</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
