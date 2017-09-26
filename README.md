@@ -8,13 +8,12 @@ Requires SFML and protobuf to be installed:
 SFML 2.4.2: https://www.sfml-dev.org/download/sfml/2.4.2/
 
 Google Protocol Buffers: https://developers.google.com/protocol-buffers/
+- Note: Protobuf may need to be built from source in order to get the necessary include files and libs
 
 ## Windows
 
 ### Configuration
 This project is built in Visual Studio. In order to build, dependencies must be set up in project properties.
-
-- Note: Protobuf may need to be built from source in order to get the necessary include files and libs
 - In C/C++, General: Replace SFML and protobuf include paths
 - In Linker, General: Replace SFML and protobuf lib paths
 - Make sure the protoc executable is in your path
