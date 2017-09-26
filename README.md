@@ -35,7 +35,6 @@ Create a shortcut to the executable. In the shortcut properties, change the targ
 
 For example: `"C:/publish/cpp-asteroids.exe" 192.168.0.6`
 
-----
 
 ## Mac
 
