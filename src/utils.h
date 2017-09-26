@@ -4,7 +4,11 @@
 
 #include <stdlib.h>
 
+#ifndef M_PI
 #define M_PI 3.14159265358979323846 //not included in visual C++
+#else
+#include <cmath>
+#endif
 
 typedef unsigned short ID;
 
