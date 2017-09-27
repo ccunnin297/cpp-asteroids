@@ -60,6 +60,7 @@ std::unique_ptr<std::thread> Server::runTickrateLimitedThread(std::function<void
             if (elapsed.asMilliseconds() >= TICKRATE_MS) {
                 lambda();
                 clock.restart();
+                sf::sleep(sf::milliseconds(TICKRATE_MS));
             }
         }
     });
@@ -129,28 +130,26 @@ void Server::listen()
     InputState inputState;
     std::string strData;
     sf::Packet packet;
-    while (m_running) {
-        if (m_socketSelector->wait(sf::milliseconds(TICKRATE_MS))) {
-            for (auto &player : m_players) {
-                sf::TcpSocket* socket = player->getSocket();
-                if (m_socketSelector->isReady(*socket)) {
-                    auto status = socket->receive(packet);
-                    switch (status) {
-                        case sf::Socket::Disconnected:
-                            Logger::log("Client disconnected");
-                            removePlayer(player);
-                            break;
-                        case sf::Socket::Done:
-                            packet >> strData;
-                            inputState.ParseFromString(strData);
-                            player->setInputState(inputState);
-                            player->setNewInputs(true);
-                            break;
-                        default:
-                            //Error
-                            Logger::log("Error receiving packet on server");
-                            break;
-                    }
+    if (m_socketSelector->wait(sf::milliseconds(TICKRATE_MS))) {
+        for (auto &player : m_players) {
+            sf::TcpSocket* socket = player->getSocket();
+            if (m_socketSelector->isReady(*socket)) {
+                auto status = socket->receive(packet);
+                switch (status) {
+                    case sf::Socket::Disconnected:
+                        Logger::log("Client disconnected");
+                        removePlayer(player);
+                        break;
+                    case sf::Socket::Done:
+                        packet >> strData;
+                        inputState.ParseFromString(strData);
+                        player->setInputState(inputState);
+                        player->setNewInputs(true);
+                        break;
+                    default:
+                        //Error
+                        Logger::log("Error receiving packet on server");
+                        break;
                 }
             }
         }

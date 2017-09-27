@@ -16,6 +16,8 @@ int main(int argc, char* argv[]) {
 
     //This has to be done first in order to connect sf::event loop to main thread
     sf::RenderWindow window(sf::VideoMode(GAME_BOUNDS_X, GAME_BOUNDS_Y), "cpp-asteroids");
+    window.setFramerateLimit(0);
+    window.setVerticalSyncEnabled(true);
 
     sf::IpAddress ipAddress;
 
