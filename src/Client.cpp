@@ -9,8 +9,6 @@ Client::Client()
     m_socket = std::make_unique<sf::TcpSocket>();
     m_game = std::make_unique<Game>();
     m_inputs = std::make_unique<Inputs>();
-
-    m_listening = true;
 };
 
 Client::~Client()
@@ -26,9 +24,19 @@ void Client::connectToServer(sf::IpAddress address, unsigned short port)
         Logger::log("error connecting on client");
     } else {
         Logger::log("client connected to server");
-        m_listenerThread = std::make_unique<std::thread>([=] { listen(); });
-        m_listenerThread->detach();
+        startListener();
     }
+};
+
+void Client::startListener()
+{
+    m_listening = true;
+    m_listenerThread = std::make_unique<std::thread>([=] {
+        while(m_listening) {
+            listen();
+        }
+    });
+    m_listenerThread->detach();
 };
 
 void Client::listen()
@@ -36,23 +44,21 @@ void Client::listen()
     sf::Packet packet;
     std::string strData;
     GameState gameState;
-    while (m_listening) {
-        auto status = m_socket->receive(packet);
-        switch (status) {
-            case sf::Socket::Disconnected:
-                Logger::log("Server disconnected");
-                disconnectFromServer();
-                break;
-            case sf::Socket::Done:
-                packet >> strData;
-                gameState.ParseFromString(strData);
-                m_game->setState(gameState);
-                break;
-            default:
-                //Errors
-                Logger::log("error receiving updates from server");
-                break;
-        }
+    auto status = m_socket->receive(packet);
+    switch (status) {
+        case sf::Socket::Disconnected:
+            Logger::log("Server disconnected");
+            disconnectFromServer();
+            break;
+        case sf::Socket::Done:
+            packet >> strData;
+            gameState.ParseFromString(strData);
+            m_game->setState(gameState);
+            break;
+        default:
+            //Errors
+            Logger::log("error receiving updates from server");
+            break;
     }
 };
 
@@ -75,8 +81,9 @@ void Client::run(sf::RenderWindow& window)
         }
 
         sf::Time elapsed = clock.getElapsedTime();
-        if (elapsed.asMilliseconds() >= 33) { //30 ticks per second
+        if (elapsed.asMilliseconds() >= TICKRATE_MS) { //30 ticks per second
             m_game->run();
+
             m_game->cleanup();
 
             window.clear();

@@ -35,53 +35,65 @@ void Server::start()
 
     m_running = true;
 
-    m_clientThread = std::make_unique<std::thread>([=] { waitForClients(); });
-    m_clientThread->detach();
-    m_runnerThread = std::make_unique<std::thread>([=] { run(); });
-    m_runnerThread->detach();
-    m_listenerThread = std::make_unique<std::thread>([=] { listen(); });
-    m_listenerThread->detach();
+    m_clientThread = runTickrateLimitedThread([=] { waitForClients(); });
+    m_runnerThread = runTickrateLimitedThread([=] { run(); });
+    m_listenerThread = runThread([=] { listen(); });
 }
+
+std::unique_ptr<std::thread> Server::runThread(std::function<void(void)> const& lambda)
+{
+    auto thread = std::make_unique<std::thread>([=] {
+        while(m_running) {
+            lambda();
+        }
+    });
+    thread->detach();
+    return thread;
+};
+
+std::unique_ptr<std::thread> Server::runTickrateLimitedThread(std::function<void(void)> const& lambda)
+{
+    auto thread = std::make_unique<std::thread>([=] {
+        sf::Clock clock;
+        while(m_running) {
+            sf::Time elapsed = clock.getElapsedTime();
+            if (elapsed.asMilliseconds() >= TICKRATE_MS) {
+                lambda();
+                clock.restart();
+            }
+        }
+    });
+    thread->detach();
+    return thread;
+};
 
 void Server::waitForClients()
 {
-    while(m_running) {
-        // accept a new connection
-        auto socket = std::make_unique<sf::TcpSocket>();
-        auto status = m_listener->accept(*socket);
-        switch (status) {
-            case sf::Socket::Done:
-                if (m_players.size() < MAX_PLAYERS) {
-                    m_socketSelector->add(*socket);
-                    addPlayer(std::move(socket));
-                    Logger::log("server connected to client");
-                } else {
-                    //TODO: send message back to client indicating max number reached
-                    Logger::log("Reached max number of players, rejecting client connection");
-                }
-                break;
-            default:
-                Logger::log("error connecting on server");
-                break;
-        }
+    // accept a new connection
+    auto socket = std::make_unique<sf::TcpSocket>();
+    auto status = m_listener->accept(*socket);
+    switch (status) {
+        case sf::Socket::Done:
+            if (m_players.size() < MAX_PLAYERS) {
+                m_socketSelector->add(*socket);
+                addPlayer(std::move(socket));
+                Logger::log("server connected to client");
+            } else {
+                //TODO: send message back to client indicating max number reached
+                Logger::log("Reached max number of players, rejecting client connection");
+            }
+            break;
+        default:
+            Logger::log("error connecting on server");
+            break;
     }
 };
 
 void Server::run()
 {
-    sf::Clock clock;
-    while(m_running) {
-        sf::Time elapsed = clock.getElapsedTime();
-        
-        if (elapsed.asMilliseconds() >= 33) { //30 ticks per second
-        // if (elapsed.asMilliseconds() >= 1000) { //1 tick per second
-            m_game->run();
-            updateClient();
-            m_game->cleanup();
-            clock.restart();
-        }
-        
-    }
+    m_game->run();
+    updateClient();
+    m_game->cleanup();
 };
 
 void Server::updateClient()
@@ -118,7 +130,7 @@ void Server::listen()
     std::string strData;
     sf::Packet packet;
     while (m_running) {
-        if (m_socketSelector->wait(sf::milliseconds(30))) {
+        if (m_socketSelector->wait(sf::milliseconds(TICKRATE_MS))) {
             for (auto &player : m_players) {
                 sf::TcpSocket* socket = player->getSocket();
                 if (m_socketSelector->isReady(*socket)) {

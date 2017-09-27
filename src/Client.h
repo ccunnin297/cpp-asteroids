@@ -18,6 +18,7 @@ class Client
         void run(sf::RenderWindow& window);
     private:
 
+        void startListener();
         void listen();
         void updateInputs(sf::Event event);
         void updateServer();
