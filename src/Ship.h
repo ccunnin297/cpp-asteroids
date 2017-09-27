@@ -10,7 +10,7 @@ class Ship : public Entity
 
         EntityType getType() override { return EntityType::SHIP; };
 
-        void update() override;
+        void update(double deltas) override;
         void hasCollidedWith(Entity* entity) override;
     
         void setMoveForward(bool const newMoveForward);

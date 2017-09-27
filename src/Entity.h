@@ -13,7 +13,7 @@ class Entity
         virtual EntityType getType() { return EntityType::ENTITY; };
 
         void init();
-        virtual void update();
+        virtual void update(double deltas);
         void draw(sf::RenderWindow& window);
 
         EntityState getState();

@@ -35,8 +35,8 @@ void Server::start()
 
     m_running = true;
 
-    m_clientThread = runTickrateLimitedThread([=] { waitForClients(); });
-    m_runnerThread = runTickrateLimitedThread([=] { run(); });
+    m_clientThread = runThread([=] { waitForClients(); });
+    m_runnerThread = runThread([=] { run(); });
     m_listenerThread = runThread([=] { listen(); });
 }
 
@@ -45,23 +45,6 @@ std::unique_ptr<std::thread> Server::runThread(std::function<void(void)> const& 
     auto thread = std::make_unique<std::thread>([=] {
         while(m_running) {
             lambda();
-        }
-    });
-    thread->detach();
-    return thread;
-};
-
-std::unique_ptr<std::thread> Server::runTickrateLimitedThread(std::function<void(void)> const& lambda)
-{
-    auto thread = std::make_unique<std::thread>([=] {
-        sf::Clock clock;
-        while(m_running) {
-            sf::Time elapsed = clock.getElapsedTime();
-            if (elapsed.asMilliseconds() >= TICKRATE_MS) {
-                lambda();
-                clock.restart();
-                sf::sleep(sf::milliseconds(TICKRATE_MS));
-            }
         }
     });
     thread->detach();
@@ -92,9 +75,19 @@ void Server::waitForClients()
 
 void Server::run()
 {
-    m_game->run();
-    updateClient();
-    m_game->cleanup();
+	sf::Clock clock;
+	while (m_running) {
+		double deltaTime = clock.getElapsedTime().asMilliseconds();
+		if (deltaTime >= TICKRATE_MS) {
+			double deltas = deltaTime / TICKRATE_MS;
+			m_game->run(deltas);
+			updateClient();
+			m_game->cleanup();
+
+			clock.restart();
+			sf::sleep(sf::milliseconds(TICKRATE_MS));
+		}
+	}
 };
 
 void Server::updateClient()

@@ -199,7 +199,7 @@ void Game::addPlayer(std::shared_ptr<Player> player)
     m_players.emplace_back(player);
 };
 
-void Game::run()
+void Game::run(double deltas)
 {
     for (auto& player : m_players) {
         //TODO: tidy this up
@@ -209,7 +209,7 @@ void Game::run()
         }
     }
     for (auto& entity : m_entities) {
-        entity->update();
+        entity->update(deltas);
     }
     checkCollisions();
 };

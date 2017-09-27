@@ -21,7 +21,7 @@ class Game
     public:
         Game();
 
-        void run();
+        void run(double deltas);
         void draw(sf::RenderWindow &window);
         void cleanup();
 

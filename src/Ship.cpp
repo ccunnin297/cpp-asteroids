@@ -12,7 +12,7 @@ Ship::Ship() : Entity()
     Entity::setCollisionOn(true);
 };
 
-void Ship::update()
+void Ship::update(double deltas)
 {
     m_velocity = 0.0f;
     if (m_moveForward) {
@@ -22,13 +22,13 @@ void Ship::update()
         m_velocity = -SHIP_VELOCITY;
     }
     if (m_turnLeft) {
-        m_rotation -= SHIP_TURN_SPEED;
+        m_rotation -= SHIP_TURN_SPEED * deltas;
     }
     if (m_turnRight) {
-        m_rotation += SHIP_TURN_SPEED;
+        m_rotation += SHIP_TURN_SPEED * deltas;
     }
 
-    Entity::update();
+    Entity::update(deltas);
 };
 
 void Ship::setMoveForward(bool const newMoveForward)

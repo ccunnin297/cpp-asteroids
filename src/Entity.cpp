@@ -55,12 +55,12 @@ void Entity::hasCollidedWith(Entity* entity)
 
 };
 
-void Entity::update()
+void Entity::update(double deltas)
 {
     float radians = degreesToRadians(m_rotation);
     sf::Vector2f unitVector = unitVectorFromRadians(radians);
     sf::Vector2f velocityVector = unitVector * m_velocity;
-    m_position += velocityVector;
+    m_position += velocityVector * (float)deltas;
 
     // if going offscreen, continue through the other side
     auto center = getCenter();

@@ -69,9 +69,9 @@ void Client::run(sf::RenderWindow& window)
     sf::Clock clock;
     while (window.isOpen())
     {
-        sf::Time elapsed = clock.getElapsedTime();
-        if (elapsed.asMilliseconds() >= TICKRATE_MS) {
-
+        double deltaTime = clock.getElapsedTime().asMilliseconds();
+        if (deltaTime >= TICKRATE_MS) {
+			double deltas = deltaTime / TICKRATE_MS;
             sf::Event event;
             while (window.pollEvent(event))
             {
@@ -83,7 +83,7 @@ void Client::run(sf::RenderWindow& window)
                 }
             }
 
-            m_game->run();
+            m_game->run(deltas);
             m_game->cleanup();
 
             window.clear();

@@ -8,9 +8,9 @@ Bullet::Bullet() : Entity()
     Entity::setCollisionOn(true);
 };
 
-void Bullet::update()
+void Bullet::update(double deltas)
 {
-    Entity::update();
+    Entity::update(deltas);
     m_traveledDistance += Entity::getVelocity();
     if (m_traveledDistance > MAX_BULLET_DISTANCE) {
         Entity::destroy();

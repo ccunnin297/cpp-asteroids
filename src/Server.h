@@ -22,8 +22,7 @@ class Server
         void addPlayer(std::unique_ptr<sf::TcpSocket> socket);
         void removePlayer(std::shared_ptr<Player> player);
 
-        std::unique_ptr<std::thread> runThread(std::function<void(void)> const& lambda);
-        std::unique_ptr<std::thread> runTickrateLimitedThread(std::function<void(void)> const& lambda);
+		std::unique_ptr<std::thread> runThread(std::function<void(void)> const& lambda);
         
         std::unique_ptr<Game> m_game;
         std::unique_ptr<sf::SocketSelector> m_socketSelector;
