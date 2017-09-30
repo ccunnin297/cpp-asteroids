@@ -22,7 +22,7 @@ Server::~Server()
     }
 };
 
-void Server::start()
+void Server::start(bool isMainThread)
 {
     // bind the listener to a port
     if (m_listener->listen(m_port) != sf::Socket::Done)
@@ -36,8 +36,13 @@ void Server::start()
     m_running = true;
 
     m_clientThread = runThread([=] { waitForClients(); });
-    m_runnerThread = runThread([=] { run(); });
     m_listenerThread = runThread([=] { listen(); });
+    
+    if (isMainThread) {
+        run();
+    } else {
+        m_runnerThread = runThread([=] { run(); });
+    }
 }
 
 std::unique_ptr<std::thread> Server::runThread(std::function<void(void)> const& lambda)

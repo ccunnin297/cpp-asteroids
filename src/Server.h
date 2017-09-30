@@ -13,7 +13,7 @@ class Server
         Server(unsigned short port);
         ~Server();
         
-        void start();
+        void start(bool isMainThread = false);
     private:
         void waitForClients();
         void run();
