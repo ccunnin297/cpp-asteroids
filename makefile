@@ -21,14 +21,13 @@ DEBUG = -g
 # Includes
 GENERIC_INCLUDE = -I$(INCLUDE_PATH)
 
-SFML_PATH = /usr/local/Cellar/sfml/2.4.2_1
-SFML_INCLUDE = -I$(SFML_PATH)/include
-SFML_LIBS = -L$(SFML_PATH)/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
+SFML_PATH = /usr/include/SFML
+SFML_INCLUDE = -I/usr/include
+SFML_LIBS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-network
 
-PROTO_PATH = /usr/local/Cellar/protobuf/3.4.1
-PROTO_BIN = $(PROTO_PATH)/bin
-PROTO_INCLUDE = -I$(PROTO_PATH)/include
-PROTO_LIBS = -L$(PROTO_PATH)/lib -lprotobuf
+PROTO_PATH = /usr/local/include/google
+PROTO_INCLUDE = -I/usr/local/include
+PROTO_LIBS = -L/usr/local/lib -lprotobuf
 PROTOS = $(wildcard $(SRC_PATH)/*.proto)
 PROTO_H_PATH = $(addprefix $(GEN_PATH)/,$(notdir $(PROTOS:.proto=.pb.cc)))
 PROTO_CC_PATH = $(addprefix $(GEN_PATH)/,$(notdir $(PROTOS:.proto=.pb.h)))
@@ -39,7 +38,7 @@ CATCH_PATH = $(INCLUDE_PATH)/catch
 CATCH_INCLUDE = -I$(CATCH_PATH)
 
 CFLAGS = -Wall -c $(DEBUG) $(GENERIC_INCLUDE) $(SFML_INCLUDE) $(PROTO_INCLUDE) $(CATCH_INCLUDE) -std=c++14
-LFLAGS = -Wall $(DEBUG) $(SFML_LIBS) $(PROTO_LIBS)
+LFLAGS = -Wall $(DEBUG) $(SFML_LIBS) $(PROTO_LIBS) -pthread -lpthread -lstdc++ -lm
 
 TEST_LFLAGS = $(LFLAGS) $(TEST_LIBS)
 
@@ -49,7 +48,7 @@ TEST_LFLAGS = $(LFLAGS) $(TEST_LIBS)
 # Compile
 $(GEN_PATH)/%.pb.cc: $(SRC_PATH)/%.proto
 	mkdir -p $(GEN_PATH)
-	$(PROTO_BIN)/protoc --proto_path=$(SRC_PATH) --cpp_out=$(GEN_PATH) $<
+	protoc --proto_path=$(SRC_PATH) --cpp_out=$(GEN_PATH) $<
 
 $(OBJ_PATH)/%.pb.o: $(GEN_PATH)/%.pb.cc
 	mkdir -p $(OBJ_PATH)
@@ -63,7 +62,7 @@ $(OBJ_PATH)/%.o: $(SRC_PATH)/%.cpp $(PROTO_GENS) $(PROTO_OBJS)
 
 # Link
 $(APP_NAME): $(OBJ_FILES)
-	$(CC) $(LFLAGS) -o $@ $(PROTO_OBJS) $^
+	$(CC) -o $@ $(PROTO_OBJS) $^ $(LFLAGS)
 
 $(TEST_NAME): $(filter-out $(OBJ_PATH)/main.o, $(OBJ_FILES)) $(TEST_OBJ_FILES)
 	$(CC) $(LFLAGS) -o $@ $(PROTO_OBJS) $^
