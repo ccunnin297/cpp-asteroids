@@ -4,6 +4,7 @@
 #include <SFML/Network.hpp>
 #include <memory>
 #include <thread>
+#include <queue>
 
 #include "Game.h"
 #include "Inputs.h"
@@ -31,4 +32,6 @@ class Client
         bool m_listening;
 
         std::unique_ptr<std::thread> m_listenerThread;
+
+        std::queue<GameState> m_pendingGameStates;
 };

@@ -34,11 +34,13 @@ Game::Game()
         }}
     };
     m_entityFactory = std::make_unique<EntityFactory>();
+
+    m_numAsteroids = 0;
 };
 
 void Game::addAsteroids()
 {
-    for (int i = 0; i < NUM_ASTEROID_SPAWN; ++i) {
+    for (int i = 0; i < NUM_ASTEROID_SPAWN && m_numAsteroids < MAX_ASTEROIDS; ++i) {
         std::unique_ptr<Asteroid> asteroid = m_entityFactory->make<Asteroid>();
 
         auto randomPosition = sf::Vector2f(randf(0, GAME_BOUNDS_X), randf(0, GAME_BOUNDS_Y));
@@ -51,6 +53,8 @@ void Game::addAsteroids()
         asteroid->setRotation(randomRotation);
         
         m_entities.emplace_back(std::move(asteroid));
+
+        ++m_numAsteroids;
     }
 };
 
@@ -299,6 +303,9 @@ void Game::checkCollisions()
 void Game::cleanupEntities()
 {   
     for (auto it = findEntityToDestroy(); it != m_entities.end(); it = findEntityToDestroy()) {
+        if ((*it)->getType() == EntityType::ASTEROID) {
+            --m_numAsteroids;
+        }
         m_entities.erase(std::remove(m_entities.begin(), m_entities.end(), *it));
         std::move(*it);
     }

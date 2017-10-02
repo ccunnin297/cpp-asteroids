@@ -52,7 +52,7 @@ void Client::listen()
             case sf::Socket::Done:
                 packet >> strData;
                 gameState.ParseFromString(strData);
-                m_game->setState(gameState);
+                m_pendingGameStates.push(gameState);
                 break;
             default:
                 //Errors
@@ -71,7 +71,13 @@ void Client::run(sf::RenderWindow& window)
     {
         double deltaTime = clock.getElapsedTime().asMilliseconds();
         if (deltaTime >= TICKRATE_MS) {
-			double deltas = deltaTime / TICKRATE_MS;
+            double deltas = deltaTime / TICKRATE_MS;
+            
+            while (!m_pendingGameStates.empty()) {
+                m_game->setState(m_pendingGameStates.front());
+                m_pendingGameStates.pop();
+            }
+
             sf::Event event;
             while (window.pollEvent(event))
             {

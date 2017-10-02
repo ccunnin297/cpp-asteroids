@@ -56,6 +56,8 @@ class Game
 
         GamePhase m_phase;
 
+        int m_numAsteroids;
+
         std::unique_ptr<EntityFactory> m_entityFactory;
         std::vector<std::unique_ptr<Entity>> m_entities;
         std::vector<std::shared_ptr<Player>> m_players;
