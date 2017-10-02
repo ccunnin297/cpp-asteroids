@@ -1,0 +1,3 @@
+#!/bin/bash
+
+nohup ./game.exe host &> game.log&

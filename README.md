@@ -40,7 +40,7 @@ For example:
 `"C:/publish/cpp-asteroids.exe" 192.168.0.6`
 
 
-## Mac
+## Mac / Linux
 
 ### Configuration
 In order to build, dependencies must be set up in the makefile.
@@ -62,12 +62,20 @@ To build and test:
 ### Run
 Run:
 
-`./run`
+`./game.exe`
 
 Connect to a running game server:
 
-`./run [ip-address]`
+`./game.exe [ip-address]`
 
 For example:
 
-`./run 127.0.0.1` or `./run 192.168.0.6`
+`./game.exe 127.0.0.1` or `./game.exe 192.168.0.6`
+
+To host:
+
+`./game.exe host`
+
+To run as a background process:
+
+`./host-daemon-linux`

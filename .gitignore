@@ -1,6 +1,9 @@
 # Publish folder
 publish/
 
+# Log files
+*.log
+
 # Prerequisites
 *.d
 
