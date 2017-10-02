@@ -16,6 +16,8 @@ std::string Asteroid::getTextureString()
             return "asteroid1.png";
         case ASTEROID2:
             return "asteroid2.png";
+        default:
+            return "asteroid1.png";
     }
 };
 

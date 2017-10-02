@@ -29,6 +29,8 @@ std::string Ship::getTextureString()
             return "ship3.png";
         case ORANGE:
             return "ship4.png";
+        default:
+            return "ship1.png";
     }
 };
 
