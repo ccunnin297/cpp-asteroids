@@ -6,7 +6,7 @@ EntityFactory::EntityFactory()
 };
 
 //Instantiates new entity based on specified type from state
-std::unique_ptr<Entity> EntityFactory::makeFromState(EntityState& entityState) {
+std::unique_ptr<Entity> EntityFactory::makeFromState(const EntityState& entityState) {
     std::unique_ptr<Entity> e;
     switch (entityState.type()) {
         case BULLET:

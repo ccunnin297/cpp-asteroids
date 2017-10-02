@@ -22,7 +22,7 @@ class EntityFactory
             t.init();
             return std::make_unique<T>(t);
         };
-        std::unique_ptr<Entity> makeFromState(EntityState& entityState);
+        std::unique_ptr<Entity> makeFromState(const EntityState& entityState);
     private:
         ID m_autoIncrement;
 };

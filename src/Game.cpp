@@ -238,7 +238,7 @@ void Game::checkGameOver()
 
 void Game::draw(sf::RenderWindow &window)
 {
-    for (auto& it : m_entities) {
+    for (const auto& it : m_entities) {
         it->draw(window);
     }
 };
@@ -246,7 +246,7 @@ void Game::draw(sf::RenderWindow &window)
 void Game::setState(GameState& gameState)
 {
     auto entityStates = gameState.entities();
-    for (auto& entStateIt : entityStates) {
+    for (const auto& entStateIt : entityStates) {
         ID id = entStateIt.id();
 
         //Find entity with matching id
@@ -304,7 +304,7 @@ void Game::cleanupEntities()
 std::vector<std::unique_ptr<Entity>>::iterator Game::findEntityToDestroy()
 {
     return find_if(m_entities.begin(), m_entities.end(), 
-        [&](auto& entity) {
+        [&](const auto& entity) {
             return entity->shouldDestroy();
         });
 };

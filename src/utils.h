@@ -19,7 +19,7 @@ inline float randf(float min = 0.0f, float max = 1.0f)
     return min + (float)(rand())/((float)(RAND_MAX/(max-min)));
 };
 
-inline float randi(int min = 0, int max = 0)
+inline int randi(int min = 0, int max = 0)
 {
     return min + rand()/(RAND_MAX/(max-min));
 };

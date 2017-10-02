@@ -33,7 +33,7 @@ EntityState Entity::getState()
     return entityState;
 };
 
-void Entity::setState(EntityState& entityState)
+void Entity::setState(const EntityState& entityState)
 {
     m_id = entityState.id();
     m_position = sf::Vector2f(entityState.position().x(), entityState.position().y());
