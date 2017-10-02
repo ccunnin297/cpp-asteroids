@@ -30,15 +30,19 @@ Release
 Run:
 - Run executable in publish folder.
 
-Connect to a running game server:
+Run with options:
+- See available options below in unix description
 - Create a shortcut to the executable. In the shortcut properties, change the target to:
 
-`"[path-to-executable]/cpp-asteroids.exe" [ip-address]`
+`"[path-to-executable]/cpp-asteroids.exe" [option]`
 
 For example:
 
 `"C:/publish/cpp-asteroids.exe" 192.168.0.6`
 
+or
+
+`"C:/Users/dev/Desktop/publish/cpp-asteroids.exe" local` 
 
 ## Mac / Linux
 
@@ -60,11 +64,15 @@ To build and test:
 `./test`
 
 ### Run
-Run:
+Connect to default server:
 
 `./game.exe`
 
-Connect to a running game server:
+To run locally:
+
+`./game.exe local`
+
+Connect to specific server:
 
 `./game.exe [ip-address]`
 
