@@ -80,11 +80,19 @@ void Server::waitForClients()
 
 void Server::run()
 {
-	sf::Clock clock;
+    sf::Clock clock;
+    sf::Clock asteroidClock;
 	while (m_running) {
-		double deltaTime = clock.getElapsedTime().asMilliseconds();
+        double deltaTime = clock.getElapsedTime().asMilliseconds();
+        double asteroidDeltaTime = asteroidClock.getElapsedTime().asMilliseconds();
 		if (deltaTime >= TICKRATE_MS) {
-			double deltas = deltaTime / TICKRATE_MS;
+            double deltas = deltaTime / TICKRATE_MS;
+
+            if (asteroidDeltaTime >= SECONDS_BETWEEN_ASTEROIDS * 1000) {
+                m_game->addAsteroids();
+                asteroidClock.restart();
+            }
+
 			m_game->run(deltas);
 			updateClient();
 			m_game->cleanup();

@@ -21,6 +21,7 @@ class Game
     public:
         Game();
 
+        void addAsteroids();
         void run(double deltas);
         void draw(sf::RenderWindow &window);
         void cleanup();
@@ -45,7 +46,6 @@ class Game
         void clearEntities();
         ID addShip(int shipNumber);
         void addPlayerShips();
-        void addAsteroids();
 
         Entity* getEntity(ID id);
         std::vector<std::unique_ptr<Entity>>::iterator findEntityToDestroy();

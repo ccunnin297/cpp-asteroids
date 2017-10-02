@@ -161,7 +161,7 @@ void Game::addPlayerShips()
     for (auto& player : m_players) {
         ID shipId = addShip(playerCount);
         player->setShipId(shipId);
-        playerCount++;
+        ++playerCount;
     }
 };
 
