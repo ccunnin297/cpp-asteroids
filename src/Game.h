@@ -43,7 +43,7 @@ class Game
         void start(Player* player);
 
         void clearEntities();
-        ID addShip();
+        ID addShip(int shipNumber);
         void addPlayerShips();
         void addAsteroids();
 

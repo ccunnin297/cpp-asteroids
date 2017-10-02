@@ -18,6 +18,7 @@ message EntityState {
     optional float rotation = 3;
     required EntityType type = 4;
     optional bool destroy = 5;
+    optional int32 subtype = 6;
 }
 
 message GameState {

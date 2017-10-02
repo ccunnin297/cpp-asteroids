@@ -19,13 +19,7 @@ class Asteroid : public Entity
         void hasCollidedWith(Entity* entity) override;
     protected:
         sf::Vector2f getBaseSize() override { return sf::Vector2f(100, 100); };
-        std::string getTextureString() override {
-            if (m_asteroidType == ASTEROID1) {
-                return "asteroid1.png";
-            } else {
-                return "asteroid2.png";
-            }
-        };
+        std::string getTextureString() override;
 
         AsteroidType m_asteroidType;
     private:

@@ -8,8 +8,41 @@ Ship::Ship() : Entity()
     m_moveBackward = false;
     m_turnLeft = false;
     m_turnRight = false;
+    m_shipType = BLUE;
 
     Entity::setCollisionOn(true);
+};
+
+void Ship::setShipType(ShipType shipType)
+{
+    m_shipType = shipType;
+};
+
+std::string Ship::getTextureString()
+{
+    switch (m_shipType) {
+        case BLUE:
+            return "ship1.png";
+        case RED:
+            return "ship2.png";
+        case GREEN:
+            return "ship3.png";
+        case ORANGE:
+            return "ship4.png";
+    }
+};
+
+EntityState Ship::getState()
+{
+    EntityState entityState = Entity::getState();
+    entityState.set_subtype(m_shipType);
+    return entityState;
+};
+
+void Ship::setState(const EntityState& entityState)
+{
+    Entity::setState(entityState);
+    m_shipType = static_cast<ShipType>(entityState.subtype());
 };
 
 void Ship::update(double deltas)

@@ -9,6 +9,16 @@ Asteroid::Asteroid() : Entity()
     m_asteroidType = static_cast<AsteroidType>(randi(0, 1));
 };
 
+std::string Asteroid::getTextureString()
+{
+    switch (m_asteroidType) {
+        case ASTEROID1:
+            return "asteroid1.png";
+        case ASTEROID2:
+            return "asteroid2.png";
+    }
+};
+
 void Asteroid::hasCollidedWith(Entity* entity)
 {
     //TODO: figure out types instead of switch

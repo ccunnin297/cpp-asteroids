@@ -55,9 +55,10 @@ void Game::addAsteroids()
 };
 
 //TODO: combine entityFactory make and emplace_back with a lambda for simple constructor function
-ID Game::addShip()
+ID Game::addShip(int shipNumber)
 {
     std::unique_ptr<Ship> ship = m_entityFactory->make<Ship>();
+    ship->setShipType(static_cast<ShipType>(shipNumber));
     ship->setPosition(sf::Vector2f(1000, 200));
     ID shipId = ship->getId();
     m_entities.emplace_back(std::move(ship));
@@ -156,15 +157,17 @@ void Game::clearEntities()
 
 void Game::addPlayerShips()
 {
+    int playerCount = 0;
     for (auto& player : m_players) {
-        ID shipId = addShip();
+        ID shipId = addShip(playerCount);
         player->setShipId(shipId);
+        playerCount++;
     }
 };
 
 Entity* Game::getEntity(ID id)
 {
-    for (auto& it : m_entities) {
+    for (const auto& it : m_entities) {
         if (it->getId() == id) {
             return it.get();
         }
@@ -297,14 +300,14 @@ void Game::cleanupEntities()
 {   
     for (auto it = findEntityToDestroy(); it != m_entities.end(); it = findEntityToDestroy()) {
         m_entities.erase(std::remove(m_entities.begin(), m_entities.end(), *it));
-        std::move(it);
+        std::move(*it);
     }
 };
 
 std::vector<std::unique_ptr<Entity>>::iterator Game::findEntityToDestroy()
 {
     return find_if(m_entities.begin(), m_entities.end(), 
-        [&](const auto& entity) {
+        [](const auto& entity) {
             return entity->shouldDestroy();
         });
 };

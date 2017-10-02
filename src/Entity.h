@@ -16,8 +16,8 @@ class Entity
         virtual void update(double deltas);
         void draw(sf::RenderWindow& window);
 
-        EntityState getState();
-        void setState(const EntityState& entityState);
+        virtual EntityState getState();
+        virtual void setState(const EntityState& entityState);
 
         bool collidesWith(Entity* entity);
         virtual void hasCollidedWith(Entity* entity);
