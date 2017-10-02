@@ -22,12 +22,14 @@ int main(int argc, char* argv[]) {
     if (argc > 1 && argv[1]) {
         if (strncmp(argv[1], "host", 4) == 0) {
             isDedicatedServer = true;
+        } else if (strncmp(argv[1], "local", 5) == 0) {
+            isLocalServer = true;
+            ipAddress = "127.0.0.1";
         } else {
             ipAddress = argv[1];
         }
     } else {
-        ipAddress = "127.0.0.1";
-        isLocalServer = true;
+        ipAddress = "13.57.80.124";
     }
     
     if (isDedicatedServer) {
