@@ -3,7 +3,7 @@
 Project built for Windows and Mac / osx.
 
 ## Dependencies
-Requires SFML and protobuf to be installed:
+Requires SFML v2.4.2 and protobuf v3.4.1 to be installed:
 
 SFML 2.4.2: https://www.sfml-dev.org/download/sfml/2.4.2/
 
