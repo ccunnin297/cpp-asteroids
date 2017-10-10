@@ -29,7 +29,7 @@ class Client
         std::unique_ptr<Game> m_game;
         std::unique_ptr<Inputs> m_inputs;
 
-        bool m_listening;
+        volatile bool m_listening;
 
         std::unique_ptr<std::thread> m_listenerThread;
 
