@@ -3,6 +3,7 @@ publish/
 
 # Log files
 *.log
+game.dtps/
 
 # Prerequisites
 *.d

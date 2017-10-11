@@ -6,7 +6,7 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/game.exe",
-            "args": [],
+            "args": ["local"],
             "stopAtEntry": false,
             "cwd": "${workspaceRoot}",
             "environment": [
@@ -16,7 +16,10 @@
                 }
             ],
             "externalConsole": false,
-            "MIMode": "lldb"
+            "MIMode": "lldb",
+            "logging": {
+                "moduleLoad": false
+            }
         }
     ]
 }

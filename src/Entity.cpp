@@ -78,12 +78,14 @@ void Entity::update(double deltas)
 
 void Entity::draw(sf::RenderWindow& window)
 {
-    sf::Texture texture = ResourceManager::getTexture(getTextureString());
-    m_sprite.setTexture(texture);
+    const sf::Texture& texture = ResourceManager::getTexture(getTextureString());
+    if (!m_sprite.getTexture()) {
+        m_sprite.setTexture(texture);
+    }
 
     //ensure sprite is m_size, so scale up/down from texture size
-    float xScale = m_size.x / texture.getSize().x;
-    float yScale = m_size.y / texture.getSize().y;
+    float xScale = m_size.x / m_sprite.getTexture()->getSize().x;
+    float yScale = m_size.y / m_sprite.getTexture()->getSize().y;
     m_sprite.setScale(xScale, yScale);
 
     //center sprite on middle

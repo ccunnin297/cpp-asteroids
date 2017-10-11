@@ -5,7 +5,7 @@
 class ResourceManager
 {
     public:
-        static sf::Texture getTexture(std::string path);
+        static const sf::Texture& getTexture(std::string path);
     private:
         static std::map<std::string, sf::Texture> s_textures;
 };

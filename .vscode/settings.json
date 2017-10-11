@@ -52,6 +52,7 @@
         "unordered_map": "cpp",
         "unordered_set": "cpp",
         "rope": "cpp",
-        "type_traits": "cpp"
+        "type_traits": "cpp",
+        "__nullptr": "cpp"
     }
 }
