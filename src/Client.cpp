@@ -9,6 +9,7 @@ Client::Client()
     m_socket = std::make_unique<sf::TcpSocket>();
     m_game = std::make_unique<Game>();
     m_inputs = std::make_unique<Inputs>();
+    m_camera = std::make_unique<Camera>();
 };
 
 Client::~Client()
@@ -93,7 +94,7 @@ void Client::run(sf::RenderWindow& window)
             m_game->cleanup();
 
             window.clear();
-            m_game->draw(window);
+            m_game->draw(*m_camera, window);
             window.display();
 
             clock.restart();

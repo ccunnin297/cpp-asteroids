@@ -8,6 +8,7 @@
 
 #include "Game.h"
 #include "Inputs.h"
+#include "Camera.h"
 
 class Client
 {
@@ -27,6 +28,7 @@ class Client
 
         std::unique_ptr<sf::TcpSocket> m_socket;
         std::unique_ptr<Game> m_game;
+        std::unique_ptr<Camera> m_camera;
         std::unique_ptr<Inputs> m_inputs;
 
         volatile bool m_listening;

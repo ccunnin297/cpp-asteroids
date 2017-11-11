@@ -15,11 +15,11 @@ class Ship : public Entity
     public:
         Ship();
 
-        EntityType getType() override { return EntityType::SHIP; };
+        EntityType getType() const override { return EntityType::SHIP; };
 
         void setShipType(ShipType shipType);
 
-        EntityState getState() override;
+        EntityState getState() const override;
         void setState(const EntityState& entityState) override;
 
         void update(double deltas) override;
@@ -32,8 +32,8 @@ class Ship : public Entity
 
         void shoot(Bullet* bullet);
     protected:
-        sf::Vector2f getBaseSize() override { return sf::Vector2f(50, 50); };
-        std::string getTextureString() override;
+        sf::Vector2f getBaseSize() const override { return sf::Vector2f(50, 50); };
+        std::string getTextureString() const override;
 
         ShipType m_shipType;
 

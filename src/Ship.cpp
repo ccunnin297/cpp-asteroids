@@ -18,7 +18,7 @@ void Ship::setShipType(ShipType shipType)
     m_shipType = shipType;
 };
 
-std::string Ship::getTextureString()
+std::string Ship::getTextureString() const
 {
     switch (m_shipType) {
         case BLUE:
@@ -34,7 +34,7 @@ std::string Ship::getTextureString()
     }
 };
 
-EntityState Ship::getState()
+EntityState Ship::getState() const
 {
     EntityState entityState = Entity::getState();
     entityState.set_subtype(m_shipType);

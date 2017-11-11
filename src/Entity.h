@@ -10,35 +10,35 @@ class Entity
     public:
         Entity();
 
-        virtual EntityType getType() { return EntityType::ENTITY; };
+        virtual EntityType getType() const { return EntityType::ENTITY; };
 
         void init();
         virtual void update(double deltas);
         void draw(sf::RenderWindow& window);
 
-        virtual EntityState getState();
+        virtual EntityState getState() const;
         virtual void setState(const EntityState& entityState);
 
-        bool collidesWith(Entity* entity);
+        bool collidesWith(Entity* entity) const;
         virtual void hasCollidedWith(Entity* entity);
 
-        bool shouldDestroy();
+        bool shouldDestroy() const;
         void destroy();
 
-        ID getId();
+        ID getId() const;
         void setId(ID newId);
-        sf::Vector2f getPosition();
+        sf::Vector2f getPosition() const;
         void setPosition(sf::Vector2f newPosition);
-        float getRotation();
+        float getRotation() const;
         void setRotation(float newRotation);
-        float getVelocity();
+        float getVelocity() const;
         void setVelocity(float newVelocity);
         void setCollisionOn(bool newCollisionOn);
-        sf::Vector2f getCenter();
-        float getCollisionRadius();
+        sf::Vector2f getCenter() const;
+        float getCollisionRadius() const;
     protected:
-        virtual sf::Vector2f getBaseSize() { return sf::Vector2f(200, 200); };
-        virtual std::string getTextureString() { return "entity.png"; };
+        virtual sf::Vector2f getBaseSize() const { return sf::Vector2f(200, 200); };
+        virtual std::string getTextureString() const { return "entity.png"; };
 
         sf::Sprite m_sprite;
 

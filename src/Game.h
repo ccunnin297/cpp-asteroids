@@ -7,6 +7,7 @@
 #include "Inputs.h"
 #include "EntityFactory.h"
 #include "Player.h"
+#include "Camera.h"
 
 #include <memory>
 
@@ -23,7 +24,7 @@ class Game
 
         void addAsteroids();
         void run(double deltas);
-        void draw(sf::RenderWindow &window);
+        void draw(Camera& camera, sf::RenderWindow &window);
         void cleanup();
 
         void setState(GameState& gameState);
@@ -46,6 +47,8 @@ class Game
         void clearEntities();
         ID addShip(int shipNumber);
         void addPlayerShips();
+
+        Ship* getFirstPlayerShip();
 
         Entity* getEntity(ID id);
         std::vector<std::unique_ptr<Entity>>::iterator findEntityToDestroy();

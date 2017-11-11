@@ -9,7 +9,7 @@ Asteroid::Asteroid() : Entity()
     m_asteroidType = static_cast<AsteroidType>(randi(0, 1));
 };
 
-std::string Asteroid::getTextureString()
+std::string Asteroid::getTextureString() const
 {
     switch (m_asteroidType) {
         case ASTEROID1:

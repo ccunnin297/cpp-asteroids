@@ -20,7 +20,7 @@ void Entity::init() {
     m_collisionRadius = m_size.x/2.0f;
 };
 
-EntityState Entity::getState()
+EntityState Entity::getState() const
 {
     EntityState entityState;
     entityState.set_id(m_id);
@@ -41,7 +41,7 @@ void Entity::setState(const EntityState& entityState)
     m_destroy = entityState.destroy();
 };
 
-bool Entity::collidesWith(Entity* entity)
+bool Entity::collidesWith(Entity* entity) const
 {
     if (!entity->m_collisionOn || !entity->m_collisionOn) {
         return false;
@@ -101,7 +101,7 @@ void Entity::draw(sf::RenderWindow& window)
     window.draw(m_sprite);
 };
 
-ID Entity::getId()
+ID Entity::getId() const
 {
     return m_id;
 };
@@ -111,7 +111,7 @@ void Entity::setId(ID newId)
     m_id = newId;
 };
 
-sf::Vector2f Entity::getPosition()
+sf::Vector2f Entity::getPosition() const
 {
     return m_position;
 };
@@ -121,7 +121,7 @@ void Entity::setPosition(sf::Vector2f newPosition)
     m_position = newPosition;
 };
 
-float Entity::getRotation()
+float Entity::getRotation() const
 {
     return m_rotation;
 };
@@ -131,7 +131,7 @@ void Entity::setRotation(float newRotation)
     m_rotation = newRotation;
 };
 
-float Entity::getVelocity()
+float Entity::getVelocity() const
 {
     return m_velocity;
 };
@@ -146,17 +146,17 @@ void Entity::setCollisionOn(bool newCollisionOn)
     m_collisionOn = newCollisionOn;
 };
 
-sf::Vector2f Entity::getCenter()
+sf::Vector2f Entity::getCenter() const
 {
     return m_position + m_size / 2.0f;
 };
 
-float Entity::getCollisionRadius()
+float Entity::getCollisionRadius() const
 {
     return m_collisionRadius;
 };
 
-bool Entity::shouldDestroy()
+bool Entity::shouldDestroy() const
 {
     return m_destroy;
 };
