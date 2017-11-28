@@ -98,7 +98,11 @@ void Client::run(sf::RenderWindow& window)
             m_game->run(deltas);
             m_game->cleanup();
 
-            window.clear();
+            window.clear(sf::Color::Blue);
+            sf::RectangleShape rectangle(sf::Vector2f(GAME_BOUNDS_X, GAME_BOUNDS_Y));
+            rectangle.setPosition(0, 0);
+            rectangle.setFillColor(sf::Color::Black);
+            window.draw(rectangle);
             m_game->draw(*m_camera, window);
             window.display();
 
