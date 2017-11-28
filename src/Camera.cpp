@@ -4,7 +4,7 @@
 
 void Camera::centerOnEntity(const Entity& entity)
 {
-    m_position = sf::Vector2f(entity.getPosition().x - WINDOW_BOUNDS_X / 2, entity.getPosition().y - WINDOW_BOUNDS_Y / 2);
+    m_position = sf::Vector2f(entity.getPosition().x, entity.getPosition().y);
 };
 
 //TODO: make this const entity

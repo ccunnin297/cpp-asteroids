@@ -10,7 +10,7 @@ Server::Server(unsigned short port)
     m_listener = std::make_unique<sf::TcpListener>();
     m_socketSelector = std::make_unique<sf::SocketSelector>();
     m_socketSelector->add(*m_listener);
-    m_game = std::make_unique<Game>();
+    m_game = std::make_unique<ServerGame>();
 };
 
 Server::~Server()
@@ -107,9 +107,19 @@ void Server::updateClient()
 {
     //check for client first
     for (auto& player : m_players) {
-        auto gameState = m_game->getState();
+        ConnectionState connectionState;
+
+        PlayerState playerState;
+        playerState.set_shipid(player->getShipId());
+        PlayerState* newPlayerState = connectionState.mutable_playerstate();
+        newPlayerState->CopyFrom(playerState);
+
+        GameState gameState = m_game->getState();
+        GameState* newGameState = connectionState.mutable_gamestate();
+        newGameState->CopyFrom(gameState);
+
         std::string strData;
-        gameState.SerializeToString(&strData);
+        connectionState.SerializeToString(&strData);
         sf::Packet packet;
         packet << strData;
         sf::TcpSocket* socket = player->getSocket();

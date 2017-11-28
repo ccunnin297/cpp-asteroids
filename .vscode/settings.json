@@ -53,6 +53,7 @@
         "unordered_set": "cpp",
         "rope": "cpp",
         "type_traits": "cpp",
-        "__nullptr": "cpp"
+        "__nullptr": "cpp",
+        "queue": "cpp"
     }
 }

@@ -7,7 +7,7 @@
 Client::Client()
 {
     m_socket = std::make_unique<sf::TcpSocket>();
-    m_game = std::make_unique<Game>();
+    m_game = std::make_unique<ClientGame>();
     m_inputs = std::make_unique<Inputs>();
     m_camera = std::make_unique<Camera>();
 };
@@ -42,7 +42,7 @@ void Client::listen()
 {
     sf::Packet packet;
     std::string strData;
-    GameState gameState;
+    ConnectionState connectionState;
     while(m_listening) {
         auto status = m_socket->receive(packet);
         switch (status) {
@@ -52,8 +52,8 @@ void Client::listen()
                 break;
             case sf::Socket::Done:
                 packet >> strData;
-                gameState.ParseFromString(strData);
-                m_pendingGameStates.push(gameState);
+                connectionState.ParseFromString(strData);
+                m_pendingConnectionStates.push(connectionState);
                 break;
             default:
                 //Errors
@@ -74,9 +74,14 @@ void Client::run(sf::RenderWindow& window)
         if (deltaTime >= TICKRATE_MS) {
             double deltas = deltaTime / TICKRATE_MS;
             
-            while (!m_pendingGameStates.empty()) {
-                m_game->setState(m_pendingGameStates.front());
-                m_pendingGameStates.pop();
+            while (!m_pendingConnectionStates.empty()) {
+                ConnectionState nextState = m_pendingConnectionStates.front();
+                GameState gameState = nextState.gamestate();
+
+                m_game->m_player->setShipId(nextState.playerstate().shipid());
+
+                m_game->setState(gameState);
+                m_pendingConnectionStates.pop();
             }
 
             sf::Event event;

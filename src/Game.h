@@ -24,7 +24,6 @@ class Game
 
         void addAsteroids();
         void run(double deltas);
-        void draw(Camera& camera, sf::RenderWindow &window);
         void cleanup();
 
         void setState(GameState& gameState);
@@ -32,6 +31,12 @@ class Game
         void enactInputs(Player* player);
         void addPlayer(std::shared_ptr<Player> player);
         void removePlayer(std::shared_ptr<Player> player);
+    protected:
+        Ship* getFirstPlayerShip();
+
+        Entity* getEntity(ID id);
+
+        std::vector<std::unique_ptr<Entity>> m_entities;
     private:
         void moveForward(Player* player);
         void moveBackward(Player* player);
@@ -48,9 +53,6 @@ class Game
         ID addShip(int shipNumber);
         void addPlayerShips();
 
-        Ship* getFirstPlayerShip();
-
-        Entity* getEntity(ID id);
         std::vector<std::unique_ptr<Entity>>::iterator findEntityToDestroy();
 
         void checkCollisions();
@@ -62,7 +64,6 @@ class Game
         int m_numAsteroids;
 
         std::unique_ptr<EntityFactory> m_entityFactory;
-        std::vector<std::unique_ptr<Entity>> m_entities;
         std::vector<std::shared_ptr<Player>> m_players;
 
         typedef void (Game::*ShipFunction)(Player*);

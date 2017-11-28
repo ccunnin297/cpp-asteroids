@@ -1,0 +1,12 @@
+syntax = "proto2";
+
+import "GameState.proto";
+
+message PlayerState {
+    required int32 shipId = 1;
+}
+
+message ConnectionState {
+    required GameState gameState = 1;
+    required PlayerState playerState = 2;
+}

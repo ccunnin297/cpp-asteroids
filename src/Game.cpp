@@ -243,17 +243,6 @@ void Game::checkGameOver()
     }
 };
 
-void Game::draw(Camera& camera, sf::RenderWindow &window)
-{
-    auto ship = getFirstPlayerShip();
-    if (ship) {
-        camera.centerOnEntity(*ship);
-    }
-    for (const auto& it : m_entities) {
-        camera.draw(*it, window);
-    }
-};
-
 Ship* Game::getFirstPlayerShip()
 {
     if (m_players.size() == 0) {

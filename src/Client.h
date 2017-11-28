@@ -6,9 +6,11 @@
 #include <thread>
 #include <queue>
 
-#include "Game.h"
+#include "ClientGame.h"
 #include "Inputs.h"
 #include "Camera.h"
+
+#include "ConnectionState.pb.h"
 
 class Client
 {
@@ -27,7 +29,7 @@ class Client
         void disconnectFromServer();
 
         std::unique_ptr<sf::TcpSocket> m_socket;
-        std::unique_ptr<Game> m_game;
+        std::unique_ptr<ClientGame> m_game;
         std::unique_ptr<Camera> m_camera;
         std::unique_ptr<Inputs> m_inputs;
 
@@ -35,5 +37,5 @@ class Client
 
         std::unique_ptr<std::thread> m_listenerThread;
 
-        std::queue<GameState> m_pendingGameStates;
+        std::queue<ConnectionState> m_pendingConnectionStates;
 };

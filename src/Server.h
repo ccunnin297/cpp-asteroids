@@ -4,8 +4,10 @@
 #include <memory>
 #include <thread>
 
-#include "Game.h"
+#include "ServerGame.h"
 #include "Player.h"
+
+#include "ConnectionState.pb.h"
 
 class Server
 {
@@ -24,7 +26,7 @@ class Server
 
 		std::unique_ptr<std::thread> runThread(std::function<void(void)> const& lambda);
         
-        std::unique_ptr<Game> m_game;
+        std::unique_ptr<ServerGame> m_game;
         std::unique_ptr<sf::SocketSelector> m_socketSelector;
         std::vector<std::shared_ptr<Player>> m_players;
         std::unique_ptr<sf::TcpListener> m_listener;
