@@ -4,6 +4,7 @@ Player::Player()
 {
     m_inputs = std::make_unique<Inputs>();
     m_newInputs = false;
+    m_shipId = -1;
 };
 
 sf::TcpSocket* Player::getSocket()

@@ -8,7 +8,7 @@ class Camera
 {
     public:
         void centerOnEntity(const Entity& entity);
-        void draw(Entity& entity, sf::RenderWindow& window) const;
+        sf::View getView();
     private:
         sf::Vector2f m_position;
 };
