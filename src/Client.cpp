@@ -45,6 +45,8 @@ void Client::listen()
     ConnectionState connectionState;
     while(m_listening) {
         auto status = m_socket->receive(packet);
+		//Lock connectionStates in order to prevent game loop from reading too early
+		std::lock_guard<std::mutex> lock(m_pendingConnectionStatesLock);
         switch (status) {
             case sf::Socket::Disconnected:
                 Logger::log("Server disconnected");
@@ -74,6 +76,8 @@ void Client::run(sf::RenderWindow& window)
         if (deltaTime >= TICKRATE_MS) {
             double deltas = deltaTime / TICKRATE_MS;
             
+			//Lock connectionStates in order to prevent game loop from reading too early
+			std::lock_guard<std::mutex> lock(m_pendingConnectionStatesLock);
             while (!m_pendingConnectionStates.empty()) {
                 ConnectionState nextState = m_pendingConnectionStates.front();
                 GameState gameState = nextState.gamestate();

@@ -28,6 +28,9 @@
     <Filter Include="Source Files\gen">
       <UniqueIdentifier>{b9f17f51-bbb8-462f-8987-c215cac5df42}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Build">
+      <UniqueIdentifier>{68299060-7886-42d9-92f3-e77bb48c490e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Asteroid.cpp">
@@ -69,11 +72,23 @@
     <ClCompile Include="src\Ship.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ClientGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ServerGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="build\gen\ConnectionState.pb.cc">
+      <Filter>Source Files\gen</Filter>
+    </ClCompile>
     <ClCompile Include="build\gen\GameState.pb.cc">
       <Filter>Source Files\gen</Filter>
     </ClCompile>
     <ClCompile Include="build\gen\InputState.pb.cc">
       <Filter>Source Files\gen</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Camera.cpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -119,13 +134,25 @@
     <ClInclude Include="src\ResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ClientGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ServerGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="build\gen\ConnectionState.pb.h">
+      <Filter>Source Files\gen</Filter>
+    </ClInclude>
     <ClInclude Include="build\gen\GameState.pb.h">
       <Filter>Source Files\gen</Filter>
     </ClInclude>
     <ClInclude Include="build\gen\InputState.pb.h">
       <Filter>Source Files\gen</Filter>
     </ClInclude>
-    <ClInclude Include="src\config.h">
+    <ClInclude Include="src\Camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -159,6 +186,12 @@
     </None>
     <None Include="src\InputState.proto">
       <Filter>Source Files\proto</Filter>
+    </None>
+    <None Include="src\ConnectionState.proto">
+      <Filter>Source Files\proto</Filter>
+    </None>
+    <None Include="protobuf.bat">
+      <Filter>Build</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -56,3 +56,6 @@ x64/Release/
 *.user
 *.userosscache
 *.sln.docstates
+
+# Release-related
+/publish.zip

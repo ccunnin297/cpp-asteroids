@@ -5,6 +5,7 @@
 #include <memory>
 #include <thread>
 #include <queue>
+#include <mutex>
 
 #include "ClientGame.h"
 #include "Inputs.h"
@@ -38,4 +39,5 @@ class Client
         std::unique_ptr<std::thread> m_listenerThread;
 
         std::queue<ConnectionState> m_pendingConnectionStates;
+		std::mutex m_pendingConnectionStatesLock;
 };
